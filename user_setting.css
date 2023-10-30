@@ -1,0 +1,46 @@
+/* theme dark mode */
+
+.dark-mode {
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+}
+
+.dark-mode a {
+    color: #e0e0e0;
+}
+
+.dark-mode .btn-primary {
+    background-color: #a2a2a2;
+    border-color: #555;
+}
+
+.dark-mode .btn-outline-primary {
+    border-color: #e0e0e0;
+    color: #e0e0e0;
+}
+
+.dark-mode .card {
+    background-color: #2a2a3d;
+    /* Darker than the main background for contrast */
+}
+
+.dark-mode .form-control {
+    background-color: #333;
+    color: #e0e0e0;
+    border-color: #555;
+}
+
+.dark-mode .form-control::placeholder {
+    color: #aaa;
+    /* Lighter placeholder text for visibility against dark input background */
+}
+
+/* theme dark mode end */
+
+/* interface language */
+
+
+
+
+
+/* interface language end */
