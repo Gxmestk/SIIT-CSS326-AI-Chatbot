@@ -189,17 +189,19 @@ INSERT INTO `sessions` (`id`, `user_id`, `model_metadata_id`, `start_time`, `las
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
+  `first_name` varchar(50) NOT NULL CHECK (first_name <> ''),
+  `last_name` varchar(50) NOT NULL CHECK (last_name <> ''),
+  `email` varchar(100) NOT NULL CHECK (email <> ''),
   `country_code` varchar(5) DEFAULT '+66',
-  `phone_number` varchar(15) NOT NULL,
+  `phone_number` varchar(15) NOT NULL CHECK (phone_number <> ''),
   `date_birth` date NOT NULL,
-  `password_hash` varchar(512) NOT NULL,
+  `password_hash` varchar(512) NOT NULL CHECK (password_hash <> ''),
   `date_joined` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 --
 -- Dumping data for table `users`

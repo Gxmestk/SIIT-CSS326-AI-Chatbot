@@ -39,8 +39,28 @@
 
 /* interface language */
 
+/* Language buttons styles */
+.btn-outline-secondary {
+    color: #333;
+    border-color: #333;
+}
 
+.dark-mode .btn-outline-secondary {
+    color: #e0e0e0;
+    border-color: #555;
+}
 
+/* Adjust the gap between language buttons and dark mode switch */
+.d-flex.align-items-center > * {
+    margin-right: 0.5rem;
+}
+
+/* When a language is active, you might want to differentiate it */
+.btn-language-active {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
 
 
 /* interface language end */
