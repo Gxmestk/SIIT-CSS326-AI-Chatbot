@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 02, 2023 at 01:15 PM
+-- Generation Time: Nov 14, 2023 at 05:23 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -84,8 +84,8 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`id`, `session_id`, `content`, `response_time`, `sender`, `timestamp`, `deleted_at`) VALUES
-(1, 1, 'Hey there!', '0.56', 'user', '2023-10-24 02:27:42', NULL),
-(2, 1, 'Holaa !', '3.14', 'user', '2023-10-24 02:29:10', NULL);
+(1, 4, '5dsa5d5dsa5d5asd5sad5as5dsa5da5sd5sa', '3.20', 'bot', '2023-11-14 03:46:29', NULL),
+(2, 4, 'fdafafas9999999999999999999999999999999999999999999999999', '3.90', 'bot', '2023-11-14 03:47:07', NULL);
 
 --
 -- Triggers `messages`
@@ -171,15 +171,21 @@ CREATE TABLE `sessions` (
   `model_metadata_id` int(11) DEFAULT NULL,
   `start_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_use` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `sessions`
 --
 
-INSERT INTO `sessions` (`id`, `user_id`, `model_metadata_id`, `start_time`, `last_use`, `deleted_at`) VALUES
-(1, 1, 1, '2023-10-24 02:27:42', '2023-10-24 02:29:10', NULL);
+INSERT INTO `sessions` (`id`, `user_id`, `model_metadata_id`, `start_time`, `last_use`, `deleted_at`, `name`) VALUES
+(1, 5, 1, '2023-11-14 02:20:02', '2023-11-14 02:20:02', NULL, 'ZZZ'),
+(2, 5, 1, '2023-11-14 02:20:15', '2023-11-14 02:20:15', NULL, 'XXXX'),
+(3, 5, 1, '2023-11-14 02:20:24', '2023-11-14 02:20:24', NULL, 'ASDF'),
+(4, 5, 1, '2023-11-14 02:21:07', '2023-11-14 03:47:07', NULL, 'HELLO WWW'),
+(5, 5, 1, '2023-11-14 02:21:07', '2023-11-14 02:21:07', NULL, 'AZXCSEWQ'),
+(6, 3, 1, '2023-11-14 02:21:15', '2023-11-14 02:21:15', NULL, 'HGHGHG');
 
 -- --------------------------------------------------------
 
@@ -189,27 +195,26 @@ INSERT INTO `sessions` (`id`, `user_id`, `model_metadata_id`, `start_time`, `las
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `first_name` varchar(50) NOT NULL CHECK (first_name <> ''),
-  `last_name` varchar(50) NOT NULL CHECK (last_name <> ''),
-  `email` varchar(100) NOT NULL CHECK (email <> ''),
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `country_code` varchar(5) DEFAULT '+66',
-  `phone_number` varchar(15) NOT NULL CHECK (phone_number <> ''),
+  `phone_number` varchar(15) NOT NULL,
   `date_birth` date NOT NULL,
-  `password_hash` varchar(512) NOT NULL CHECK (password_hash <> ''),
+  `password_hash` varchar(512) NOT NULL,
   `date_joined` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `country_code`, `phone_number`, `date_birth`, `password_hash`, `date_joined`, `last_login`, `deleted_at`) VALUES
-(1, 'John', 'Doe', 'john.doe@example.com', '+66', '1234567890', '1990-05-05', 'hashedpassword123', '2023-10-24 02:12:14', '2023-10-24 02:12:14', NULL),
-(2, 'Jane', 'Smith', 'jane.smith@example.com', '+66', '0987654321', '1992-08-08', 'anotherhashedpassword', '2023-10-24 02:13:19', '2023-10-24 02:13:19', NULL);
+(3, 'Thanaphat', 'Khemniwat', 'gtk@gmail.com', '+66', '0935789539', '2001-06-19', '$2y$10$AjuEv0qTleQMVt4CXyXt2.KazxRUNOP85SzqKpQOr45ppYyk2Wt02', '2023-11-07 04:12:56', '2023-11-07 04:12:56', NULL),
+(5, 'Games', 'GTK', 'g.khemniwat@gmail.com', '+66', '0810830880', '2023-11-04', '$2y$10$kNJod6u81HRFX15T1tXxW.s6OwkrzZIYKnTMn0XLqJP72Tts3yKrq', '2023-11-07 04:50:56', '2023-11-07 04:50:56', NULL),
+(7, 'aaa', 'bbb', 'ccc@ddd.com', '+66', '0000000000', '2023-11-01', '$2y$10$tMM14yogM9hUL4qtAhXQK.gknTa2g2dTxSkC04sDkhvBN7PnZhs7O', '2023-11-07 05:26:26', '2023-11-07 05:26:26', NULL);
 
 -- --------------------------------------------------------
 
@@ -310,13 +315,13 @@ ALTER TABLE `modelmetadata`
 -- AUTO_INCREMENT for table `sessions`
 --
 ALTER TABLE `sessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables

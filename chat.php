@@ -1,3 +1,74 @@
+<?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Initialize the session to access session variables.
+session_start();
+
+// Redirect to the login page if the user is not logged in.
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
+// Include the database connection script.
+require 'db.php';
+
+function fetchUserSessions($userId, $conn)
+{
+    $sessions = [];
+    $query = "SELECT id, name FROM sessions WHERE user_id = ? ORDER BY last_use DESC";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $sessions[] = $row;
+    }
+
+    $stmt->close();
+    return $sessions;
+}
+
+
+
+function fetchSessionMessages($sessionId, $conn)
+{
+    $messages = [];
+    $query = "SELECT * FROM messages WHERE session_id = ? ORDER BY timestamp ASC";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $sessionId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $messages[] = $row;
+    }
+
+    $stmt->close();
+    return $messages;
+}
+
+// Fetch sessions and messages if a session ID is provided.
+$sessions = fetchUserSessions($_SESSION['user_id'], $conn);
+
+
+
+// Check if session_id is present in the URL and fetch messages.
+if (isset($_GET['session_id']) && filter_var($_GET['session_id'], FILTER_VALIDATE_INT) !== false) {
+    $sessionId = $_GET['session_id'];
+    $messages = fetchSessionMessages($sessionId, $conn);
+}
+
+// Close the database connection.
+$conn->close();
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,240 +76,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .session-container {
-
-            height: 100%;
-            overflow-y: auto;
-            /* This makes the session list scrollable */
-        }
-
-        .menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 25%;
-            background: #fff;
-            z-index: 1;
-
-        }
-
-        .session-list a {
-            color: #000;
-            background: #e9e9e9;
-            border-radius: 10px;
-            margin: 10px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px;
-
-        }
-
-        .session-list a:hover {
-            background: #d9d9d9;
-        }
-
-        .input-area {
-            background: #fff;
-            border-top: 2px solid #e9e9e9;
-            padding: 15px 20px;
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 75%;
-            display: flex;
-            align-items: center;
-            z-index: 1;
-        }
-
-        .input-area textarea {
-            flex: 1;
-            border: 2px solid #e9e9e9;
-            resize: none;
-        }
-
-        .input-area button {
-            width: 14%;
-            margin-left: 5px;
-        }
-
-        .user-icon,
-        .ai-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin-right: 8px;
-            background-color: #ccc;
-            display: inline-block;
-        }
-
-        .ai-icon {
-            background-color: #888;
-        }
-
-        .chat-area {
-            margin-left: 25%;
-            height: calc(100% - 60px);
-            overflow-y: auto;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="chat_style.css" rel="stylesheet"> <!-- External CSS file for chat page styles -->
 </head>
 
 <body>
     <!-- Session List -->
+
     <div class="menu">
-        <div class="p-3 d-flex align-items-center">
-            <button class="btn btn-outline-primary mb-2 flex-grow-1">New Chat</button>
-            <span class="user-icon ml-2"></span>
+        <div class="p-5 d-flex align-items-center">
+            <a href="login.php" class="btn btn-outline-primary flex-grow-1 ">New Chat</a>
+            <a href="user_setting.php" class="btn btn-outline-primary ms-3 flex-grow-1">Setting</a>
         </div>
+
         <div class="session-container">
-            <!-- <div class="p-3 d-flex align-items-center">
-            <button class="btn btn-outline-primary mb-2 flex-grow-1">New Chat</button>
-            <span class="user-icon ml-2"></span>
-        </div> -->
             <div class="flex-grow-1 overflow-auto session-list">
-                <!-- Sessions List -->
-
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-                <a href="#" class="text-decoration-none">
-                    Session 1
-                </a>
-
-
+                <!-- Dynamic Sessions List -->
+                <?php foreach ($sessions as $session) : ?>
+                    <a href="chat.php?session_id=<?php echo $session['id']; ?>" class="text-decoration-none">
+                        <?php echo htmlspecialchars($session['name']); ?>
+                    </a>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
+
     <!-- Chat Area -->
     <div class="chat-area p-4">
-        <!-- Chat Messages (History Area) -->
+        <!-- Check if there are messages to display -->
+        <?php if (!empty($messages)) : ?>
+            <!-- Chat Messages (History Area) -->
+            <?php foreach ($messages as $message) : ?>
+                <div class="mb-3 d-flex align-items-center">
+                    <!-- Display appropriate icon based on who sent the message -->
+                    <?php if ($message['sender'] == 'user') : ?>
+                        <img src="user_icon.png" class="user-icon mr-2">
+                    <?php else : ?>
+                        <img src="bot_icon.png" class="user-icon mr-2">
+                    <?php endif; ?>
 
-
-        <div class="mb-3">
-            <span class="user-icon"></span>
-            <strong>User:</strong> Hello, Assistant!
-        </div>
-        <div class="mb-3">
-            <span class="ai-icon"></span>
-            <strong>Assistant:</strong> Hello! How can I help you?
-        </div>
-        <div class="mb-3">
-            <span class="user-icon"></span>
-            <strong>User:</strong> Hello, Assistant!
-        </div>
-        <div class="mb-3">
-            <span class="ai-icon"></span>
-            <strong>Assistant:</strong> Hello! How can I help you?
-        </div>
-        <div class="mb-3">
-            <span class="user-icon"></span>
-            <strong>User:</strong> Hello, Assistant!
-        </div>
-        <div class="mb-3">
-            <span class="ai-icon"></span>
-            <strong>Assistant:</strong> Hello! How can I help you?
-        </div>
-        <div class="mb-3">
-            <span class="user-icon"></span>
-            <strong>User:</strong> Hello, Assistant!
-        </div>
-        <div class="mb-3">
-            <span class="ai-icon"></span>
-            <strong>Assistant:</strong> Hello! How can I help you?
-        </div>
-        <div class="mb-3">
-            <span class="user-icon"></span>
-            <strong>User:</strong> Hello, Assistant!
-        </div>
-        <div class="mb-3">
-            <span class="ai-icon"></span>
-            <strong>Assistant:</strong> Hello! How can I help you?
-        </div>
-        <div class="mb-3">
-            <span class="user-icon"></span>
-            <strong>User:</strong> Hello, Assistant!
-        </div>
-        <div class="mb-3">
-            <span class="ai-icon"></span>
-            <strong>Assistant:</strong> Hello! How can I help you?
-        </div>
-        <div class="mb-3">
-            <span class="user-icon"></span>
-            <strong>User:</strong> Hello, Assistant!
-        </div>
-        <div class="mb-3">
-            <span class="ai-icon"></span>
-            <strong>Assistant:</strong> Hello! How can I help you?
-        </div>
-        <div class="mb-3">
-            <span class="user-icon"></span>
-            <strong>User:</strong> Hello, Assistant!
-        </div>
-        <div class="mb-3">
-            <span class="ai-icon"></span>
-            <strong>Assistant:</strong> Hello! How can I help you?
-        </div>
-
+                    <!-- Display the message content -->
+                    <div>
+                        <p><?php echo htmlspecialchars($message['content']); ?></p>
+                        <small class="text-muted"><?php echo htmlspecialchars($message['timestamp']); ?></small>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else : ?>
+            <!-- Display a message if no messages are found for the session -->
+            <p>No messages to display for this session.</p>
+        <?php endif; ?>
     </div>
+
+
 
     <!-- Input Area for User Messages -->
     <div class="input-area">
         <textarea class="form-control" rows="1" placeholder="Type your message here..."></textarea>
         <button class="btn btn-primary">
-            <i class="bi bi-arrow-right-circle-fill"></i>
+            Send
         </button>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> <!-- Link to Bootstrap's JavaScript bundle -->
 </body>
 
 </html>

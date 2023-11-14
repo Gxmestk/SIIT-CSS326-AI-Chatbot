@@ -9,8 +9,8 @@ $error_message = ''; // Initialize an empty error message.
 
 // Check for POST request to handle login submission.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? ''); // Use null coalescing operator to avoid undefined index notice.
-    $password = $_POST['password'] ?? ''; // Default to empty string if not set.
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
 
     // Validate email and password fields.
     if ($email !== '' && $password !== '') {
