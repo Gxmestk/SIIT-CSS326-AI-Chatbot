@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Attempt to insert a new user.
         if (insertUser($first_name, $last_name, $email, $phone_number, $date_of_birth, $password_hash, $conn)) {
             // Redirect on successful registration.
-            header("Location: chat.php");
+            header("Location: login.php");
             exit;
         } else {
             // Handle insertion errors.
