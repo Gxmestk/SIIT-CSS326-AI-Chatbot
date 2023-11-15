@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 15, 2023 at 07:26 AM
+-- Generation Time: Nov 15, 2023 at 01:58 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -87,7 +87,10 @@ INSERT INTO `messages` (`id`, `session_id`, `content`, `sender`, `timestamp`, `d
 (3, 4, 'sadasdadadadasdada', 'user', '2023-11-14 05:37:46', NULL, NULL),
 (4, 4, 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz', 'bot', '2023-11-14 05:38:12', NULL, 3),
 (5, 4, 'asssssssssssssssssssssssssssssssssssss', 'user', '2023-11-14 05:39:55', NULL, NULL),
-(6, 4, '555555555555555555555555555555555555555555555555555555555555555555555555555', 'bot', '2023-11-14 05:40:20', NULL, 5);
+(6, 4, '555555555555555555555555555555555555555555555555555555555555555555555555555', 'bot', '2023-11-14 05:40:20', NULL, 5),
+(7, 4, 'My name is BSTHUN', 'user', '2023-11-15 07:43:17', NULL, NULL),
+(8, 4, 'My name is BSTHUN The god of sql and php ♥', 'user', '2023-11-15 07:44:05', NULL, NULL),
+(9, 4, ' Hi Bsthuen is my name as well. I was born in 1985.', 'bot', '2023-11-15 07:44:05', NULL, 8);
 
 --
 -- Triggers `messages`
@@ -185,7 +188,7 @@ INSERT INTO `sessions` (`id`, `user_id`, `model_metadata_id`, `start_time`, `las
 (1, 5, 1, '2023-11-14 02:20:02', '2023-11-14 02:20:02', NULL, 'ZZZ'),
 (2, 5, 1, '2023-11-14 02:20:15', '2023-11-14 02:20:15', NULL, 'XXXX'),
 (3, 5, 1, '2023-11-14 02:20:24', '2023-11-14 02:20:24', NULL, 'ASDF'),
-(4, 5, 1, '2023-11-14 02:21:07', '2023-11-14 05:40:20', NULL, 'HELLO WWW'),
+(4, 5, 1, '2023-11-14 02:21:07', '2023-11-15 07:44:05', NULL, 'HELLO WWW'),
 (5, 5, 1, '2023-11-14 02:21:07', '2023-11-14 02:21:07', NULL, 'AZXCSEWQ'),
 (6, 3, 1, '2023-11-14 02:21:15', '2023-11-14 02:21:15', NULL, 'HGHGHG');
 
@@ -308,7 +311,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `modelmetadata`
