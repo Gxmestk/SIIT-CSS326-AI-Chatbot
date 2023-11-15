@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 14, 2023 at 05:23 AM
+-- Generation Time: Nov 15, 2023 at 07:26 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -73,19 +73,21 @@ CREATE TABLE `messages` (
   `id` int(11) NOT NULL,
   `session_id` int(11) DEFAULT NULL,
   `content` text NOT NULL,
-  `response_time` decimal(5,2) DEFAULT NULL,
   `sender` enum('user','bot') NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `user_question_message_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `messages`
 --
 
-INSERT INTO `messages` (`id`, `session_id`, `content`, `response_time`, `sender`, `timestamp`, `deleted_at`) VALUES
-(1, 4, '5dsa5d5dsa5d5asd5sad5as5dsa5da5sd5sa', '3.20', 'bot', '2023-11-14 03:46:29', NULL),
-(2, 4, 'fdafafas9999999999999999999999999999999999999999999999999', '3.90', 'bot', '2023-11-14 03:47:07', NULL);
+INSERT INTO `messages` (`id`, `session_id`, `content`, `sender`, `timestamp`, `deleted_at`, `user_question_message_id`) VALUES
+(3, 4, 'sadasdadadadasdada', 'user', '2023-11-14 05:37:46', NULL, NULL),
+(4, 4, 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz', 'bot', '2023-11-14 05:38:12', NULL, 3),
+(5, 4, 'asssssssssssssssssssssssssssssssssssss', 'user', '2023-11-14 05:39:55', NULL, NULL),
+(6, 4, '555555555555555555555555555555555555555555555555555555555555555555555555555', 'bot', '2023-11-14 05:40:20', NULL, 5);
 
 --
 -- Triggers `messages`
@@ -183,7 +185,7 @@ INSERT INTO `sessions` (`id`, `user_id`, `model_metadata_id`, `start_time`, `las
 (1, 5, 1, '2023-11-14 02:20:02', '2023-11-14 02:20:02', NULL, 'ZZZ'),
 (2, 5, 1, '2023-11-14 02:20:15', '2023-11-14 02:20:15', NULL, 'XXXX'),
 (3, 5, 1, '2023-11-14 02:20:24', '2023-11-14 02:20:24', NULL, 'ASDF'),
-(4, 5, 1, '2023-11-14 02:21:07', '2023-11-14 03:47:07', NULL, 'HELLO WWW'),
+(4, 5, 1, '2023-11-14 02:21:07', '2023-11-14 05:40:20', NULL, 'HELLO WWW'),
 (5, 5, 1, '2023-11-14 02:21:07', '2023-11-14 02:21:07', NULL, 'AZXCSEWQ'),
 (6, 3, 1, '2023-11-14 02:21:15', '2023-11-14 02:21:15', NULL, 'HGHGHG');
 
@@ -214,7 +216,9 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `country_code`, `phone_number`, `date_birth`, `password_hash`, `date_joined`, `last_login`, `deleted_at`) VALUES
 (3, 'Thanaphat', 'Khemniwat', 'gtk@gmail.com', '+66', '0935789539', '2001-06-19', '$2y$10$AjuEv0qTleQMVt4CXyXt2.KazxRUNOP85SzqKpQOr45ppYyk2Wt02', '2023-11-07 04:12:56', '2023-11-07 04:12:56', NULL),
 (5, 'Games', 'GTK', 'g.khemniwat@gmail.com', '+66', '0810830880', '2023-11-04', '$2y$10$kNJod6u81HRFX15T1tXxW.s6OwkrzZIYKnTMn0XLqJP72Tts3yKrq', '2023-11-07 04:50:56', '2023-11-07 04:50:56', NULL),
-(7, 'aaa', 'bbb', 'ccc@ddd.com', '+66', '0000000000', '2023-11-01', '$2y$10$tMM14yogM9hUL4qtAhXQK.gknTa2g2dTxSkC04sDkhvBN7PnZhs7O', '2023-11-07 05:26:26', '2023-11-07 05:26:26', NULL);
+(7, 'aaa', 'bbb', 'ccc@ddd.com', '+66', '0000000000', '2023-11-01', '$2y$10$tMM14yogM9hUL4qtAhXQK.gknTa2g2dTxSkC04sDkhvBN7PnZhs7O', '2023-11-07 05:26:26', '2023-11-07 05:26:26', NULL),
+(8, 'Mukkk', 'aasdad', 'asda@asda.com', '+66', '0888888888', '2015-02-13', '$2y$10$r2D.IyDS8fNIfomo6kjCnO34CC4I17WQqm8Vtih.suVgctxPU2BAy', '2023-11-14 07:30:28', '2023-11-14 07:30:28', NULL),
+(9, 'sadsadas', 'dsadsad', 'bs@bsthun.com', '+66', '0845321999', '2023-11-09', '$2y$10$rZ8k3fS6tDwEX4p05jgr4uZTJ7sHm6SuQG66Se2LpJaYDSmjN6/Ru', '2023-11-15 06:26:27', '2023-11-15 06:26:27', NULL);
 
 -- --------------------------------------------------------
 
@@ -248,7 +252,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
   ADD KEY `session_id` (`session_id`),
-  ADD KEY `idx_messages_session_deleted_at` (`deleted_at`);
+  ADD KEY `idx_messages_session_deleted_at` (`deleted_at`),
+  ADD KEY `fk_user_question_message` (`user_question_message_id`);
 
 --
 -- Indexes for table `modelfeedback`
@@ -303,7 +308,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `modelmetadata`
@@ -321,7 +326,7 @@ ALTER TABLE `sessions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
@@ -331,6 +336,7 @@ ALTER TABLE `users`
 -- Constraints for table `messages`
 --
 ALTER TABLE `messages`
+  ADD CONSTRAINT `fk_user_question_message` FOREIGN KEY (`user_question_message_id`) REFERENCES `messages` (`id`),
   ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`session_id`) REFERENCES `sessions` (`id`) ON DELETE CASCADE;
 
 --

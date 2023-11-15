@@ -1,5 +1,6 @@
 <?php
 
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -32,8 +33,6 @@ function fetchUserSessions($userId, $conn)
     $stmt->close();
     return $sessions;
 }
-
-
 
 function fetchSessionMessages($sessionId, $conn)
 {
@@ -122,6 +121,8 @@ $conn->close();
                     </div>
                 </div>
             <?php endforeach; ?>
+        <?php elseif (!isset($_GET['session_id'])) : ?>
+            <p>Please select a session</p>
         <?php else : ?>
             <!-- Display a message if no messages are found for the session -->
             <p>No messages to display for this session.</p>
@@ -131,12 +132,16 @@ $conn->close();
 
 
     <!-- Input Area for User Messages -->
-    <div class="input-area">
-        <textarea class="form-control" rows="1" placeholder="Type your message here..."></textarea>
-        <button class="btn btn-primary">
-            Send
-        </button>
-    </div>
+    <?php if (isset($_GET['session_id']) && filter_var($_GET['session_id'], FILTER_VALIDATE_INT) !== false) : ?>
+        <form method="POST" class="input-area" action="bot.php">
+            <textarea class="form-control" name="user_message" rows="1" placeholder="Type your message here..."></textarea>
+            <input type="hidden" name="session_id" value="<?php echo $_GET['session_id']; ?>">
+            <button type="submit" class="btn btn-primary">
+                Send
+            </button>
+        </form>
+    <?php endif; ?>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> <!-- Link to Bootstrap's JavaScript bundle -->
 </body>
