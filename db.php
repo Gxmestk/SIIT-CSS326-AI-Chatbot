@@ -2,8 +2,8 @@
 // Database credentials
 $host = 'localhost';
 $db   = 'chatbot_db';
-$user = 'root';
-$pass = 'root';
+$user = 'backend';
+$pass = 'aesWt1z4QT5AEy@b';
 
 // Create connection
 $conn = new mysqli($host, $user, $pass, $db);
