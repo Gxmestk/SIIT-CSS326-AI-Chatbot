@@ -85,7 +85,7 @@ $conn->close();
     <div class="menu">
         <div class="p-5 d-flex align-items-center">
             <a href="login.php" class="btn btn-outline-primary flex-grow-1 ">New Chat</a>
-            <a href="user_setting.php" class="btn btn-outline-primary ms-3 flex-grow-1">Setting</a>
+            <a href="setting.php" class="btn btn-outline-primary ms-3 flex-grow-1">Setting</a>
         </div>
 
         <div class="session-container">
