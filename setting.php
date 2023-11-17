@@ -40,10 +40,14 @@
                         <!-- End of Personal Information Section -->
 
                         <!-- Edit and Delete buttons -->
-                        <div class="d-flex justify-content-center align-items-center">
+                        <div class="d-flex justify-content-center align-items-center mb-3">
                             <a href="edit.php" class="btn btn-primary flex-grow-1" id="button_edit">Edit Profile</a>
                             <a href="delete.php" class="btn btn-primary flex-grow-1" id="button_delete">Delete Account</a>
                         </div>
+                        
+                        <div class="center text-center mb-2">
+                          <a href="chat.php" class="btn btn-primary w-100" id="button_back">Back</a>
+                         </div>
                         <!-- End of Edit and Delete buttons -->
 
                     </div>
