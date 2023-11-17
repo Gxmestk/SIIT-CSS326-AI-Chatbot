@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"> <!-- Defines the character set to be UTF-8 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Sets the viewport to scale for mobile devices -->
-    <title id="title_sign_up">Edit profile</title> <!-- Title of the page, with an ID for possible JavaScript manipulation -->
+    <title data-translate="edit_title">Edit profile</title> <!-- Title of the page, with an ID for possible JavaScript manipulation -->
     <!-- Link to Bootstrap's CSS with integrity and crossorigin attributes for Subresource Integrity (SRI) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="user_setting.css" rel="stylesheet"> <!-- Link to a custom CSS file for additional styling -->
@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    <!-- Container for the signup form with responsive breakpoints -->
+    <!-- Container for the edit form with responsive breakpoints -->
     <div class="container">
         <!-- Row with centered content -->
         <div class="row justify-content-center">
@@ -43,7 +43,7 @@
                 <div class="card mx-auto my-5">
                     <div class="card-body">
                         <!-- Sign Up header in the card -->
-                        <h3 class="text-center mb-4" id="header_edit_profile">Edit profile</h3>
+                        <h3 class="text-center mb-4" id="edit_title">Edit profile</h3>
                         <!-- Sign Up form starts -->
                         <form method="post">
                             <!-- Input group for First and Last name -->
