@@ -25,6 +25,9 @@
         "button_sign_up": "Sign up",
         "button_confirm": "Confirm",
         "button_back": "Back",
+        "button_newchat": "New Chat",
+        "button_setting": "Setting",
+        "edit_title": "Edit profile",
   
       },
       "TH": {
@@ -52,7 +55,10 @@
         "button_log_in": "เข้าสู่ระบบ",
         "button_sign_up": "ลงทะเบียน",
         "button_confirm": "คอนเฟิร์ม",
-        "button_back": "กลับ"
+        "button_back": "กลับ",
+        "button_newchat": "แชทใหม่",
+        "button_setting": "ตั้งค่า",
+        "edit_title": "แก้ไขโปรไฟล์"
       }
   };
 
