@@ -10,6 +10,23 @@
 </head>
 
 <body>
+    <!-- Top-right corner language switch and dark mode toggle -->
+    <div class="position-absolute top-0 end-0 p-3">
+        <div class="d-flex align-items-center"> <!-- Flex container for inline alignment of elements -->
+            <!-- Language Switch Buttons -->
+            <div class="btn-group" role="group" aria-label="Language switch">
+                <button type="button" class="btn btn-outline-secondary btn-sm btn-language" id="btn-language-th">TH</button> <!-- Button for Thai language -->
+                <button type="button" class="btn btn-outline-secondary btn-sm btn-language" id="btn-language-en">EN</button> <!-- Button for English language -->
+            </div>
+
+            <!-- Dark Mode Toggle Switch -->
+            <div class="form-check form-switch ms-3">
+                <input class="form-check-input" type="checkbox" id="darkModeToggle"> <!-- Checkbox input for dark mode toggle -->
+                <label class="form-check-label" for="darkModeToggle" id="label_dark_mode">Dark Mode</label> <!-- Label for the dark mode toggle -->
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-sm-10 col-md-8 col-lg-6">
@@ -21,28 +38,28 @@
                         <div class="mb-3">
                             <div class="row g-2 d-flex justify-content-center align-items-center">
                                 <div class="col border">
-                                    <p><strong>FirstName:</strong> </p>
+                                    <p><strong>First Name: </strong> </p>
                                 </div>
                                 <div class="col border">
-                                    <p><strong>LastName:</strong> </p>
+                                    <p><strong>Last Name: </strong> </p>
                                 </div>
                             </div>
                         </div>
                         <div class="mb-3 border p-1">
-                            <p><strong>Email:</strong> </p>
+                            <p><strong>Email: </strong> </p>
                         </div>
                         <div class="mb-3 border p-1">
-                            <p><strong>Phone Number:</strong> </p>
+                            <p><strong>Phone Number: </strong> </p>
                         </div>
                         <div class="mb-3 border p-1">
-                            <p><strong>Birthdate:</strong> .</p>
+                            <p><strong>Date of Birth: </strong> </p>
                         </div>
                         <!-- End of Personal Information Section -->
 
                         <!-- Edit and Delete buttons -->
                         <div class="d-flex justify-content-center align-items-center mb-3">
-                            <a href="edit.php" class="btn btn-primary flex-grow-1" id="button_edit">Edit Profile</a>
-                            <a href="delete.php" class="btn btn-primary flex-grow-1" id="button_delete">Delete Account</a>
+                            <a href="edit.php" class="btn btn-primary w-100" id="edit_titles">Edit Profile</a>
+                            <a href="delete.php" class="btn btn-primary w-100" id="delete_button">Delete Account</a>
                         </div>
                         
                         <div class="center text-center mb-2">
@@ -55,6 +72,10 @@
             </div>
         </div>
     </div>
+    <script src="themeHandler.js"></script> <!-- A script link to a JavaScript file for theme handling, likely related to dark/light mode switching -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
 </body>
 
 </html>
