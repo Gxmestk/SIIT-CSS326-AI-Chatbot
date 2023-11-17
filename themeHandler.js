@@ -23,6 +23,8 @@
         "phrase_love_optimizing": "love optimizing and refactoring code",
         "button_log_in": "Log in",
         "button_sign_up": "Sign up",
+        "button_confirm": "Confirm",
+        "button_back": "Back",
   
       },
       "TH": {
@@ -48,7 +50,9 @@
         "phrase_hate_interruptions": "ไม่ชอบการถูกรบกวนขณะเขียนโค้ด",
         "phrase_love_optimizing": "ชอบการปรับปรุงและโครงสร้างโค้ดใหม่",
         "button_log_in": "เข้าสู่ระบบ",
-        "button_sign_up": "ลงทะเบียน"
+        "button_sign_up": "ลงทะเบียน",
+        "button_confirm": "คอนเฟิร์ม",
+        "button_back": "กลับ"
       }
   };
 
