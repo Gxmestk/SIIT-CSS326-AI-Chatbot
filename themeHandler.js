@@ -28,7 +28,17 @@
         "button_newchat": "New Chat",
         "button_setting": "Setting",
         "edit_title": "Edit profile",
-  
+        "button_yes": "YES",
+        "button_no": "NO",
+        "delete_title": "Are you sure you want to delete your account?",
+        "s_first_name": "First Name: ",
+        "s_last_name": "Last Name: ",
+        "s_email": "Email: ",
+        "s_phone_number": "Phone Number: ",
+        "s_date_of_birth": "Date of Birth: ",
+        "delete_button": "Delete Account",
+        "edit_titles": "Edit Profile",
+        "header_new_page": "Profile",
       },
       "TH": {
         "label_dark_mode": "โหมดกลางคืน",
@@ -58,7 +68,18 @@
         "button_back": "กลับ",
         "button_newchat": "แชทใหม่",
         "button_setting": "ตั้งค่า",
-        "edit_title": "แก้ไขโปรไฟล์"
+        "edit_title": "แก้ไขโปรไฟล์",
+        "button_yes": "ใช่",
+        "button_no": "ไม่",
+        "delete_title": "คุณแน่ใจใช่ไหมว่าจะลบบัญชีผู้ใช้ของคุณ?",
+        "s_first_name": "ชื่อจริง: ",
+        "s_last_name": "นามสกุล: ",
+        "s_email": "อีเมล: ",
+        "s_phone_number": "หมายเลขโทรศัพท์: ",
+        "s_date_of_birth": "วันเกิด: ",
+        "delete_button": "ลบบัญชีผู้ใช้",
+        "edit_titles": "แก้ไขโปรไฟล์",
+        "header_new_page": "โปรไฟล์",
       }
   };
 

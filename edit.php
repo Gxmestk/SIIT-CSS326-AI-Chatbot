@@ -74,8 +74,8 @@
                             </div> <!-- Closing div tag for the password input field -->
 
                             <div class="d-flex justify-content-center align-items-center">
-                                <button type="confirm" class="btn btn-primary flex-grow-1" id="button_confirm">Confirm</button>
-                                <a href="setting.php" class="btn btn-primary flex-grow-1" id="button_back">Back</a>
+                                <button type="confirm" class="btn btn-primary w-100" id="button_confirm">Confirm</button>
+                                <a href="setting.php" class="btn btn-primary w-100" id="button_back">Back</a>
                             </div>
 
                             <!-- <div class="d-flex justify-content-center align-items-center">
