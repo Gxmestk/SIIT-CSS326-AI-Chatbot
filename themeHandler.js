@@ -64,7 +64,7 @@
         "phrase_love_optimizing": "ชอบการปรับปรุงและโครงสร้างโค้ดใหม่",
         "button_log_in": "เข้าสู่ระบบ",
         "button_sign_up": "ลงทะเบียน",
-        "button_confirm": "คอนเฟิร์ม",
+        "button_confirm": "ยืนยัน",
         "button_back": "กลับ",
         "button_newchat": "แชทใหม่",
         "button_setting": "ตั้งค่า",
