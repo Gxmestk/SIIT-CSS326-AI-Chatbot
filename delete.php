@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br>    
             <a href=" " class="btn btn-outline-primary btn-lg mb-2 w-50" id="button_yes">YES</a> <!-- Link styled as button for logging in -->
             <br> <!-- Line break -->
-            <a href=" " class="btn btn-outline-primary btn-lg w-50" id="button_no">NO</a> <!-- Link styled as button for signing up -->
+            <a href="setting.php" class="btn btn-outline-primary btn-lg w-50" id="button_no">NO</a> <!-- Link styled as button for signing up -->
         </div>
     </div>
 
