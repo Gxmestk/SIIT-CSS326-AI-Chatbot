@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"> <!-- Sets the character encoding for the document -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ensures proper rendering and touch zooming on mobile devices -->
-    <title>delete page</title> <!-- Title of the document shown in the browser's title bar or tab -->
+    <title>Delete Account</title> <!-- Title of the document shown in the browser's title bar or tab -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> <!-- Links to the Bootstrap CSS for styling -->
     <link href="user_setting.css" rel="stylesheet"> <!-- Links to your custom CSS for additional styling -->
 </head>
