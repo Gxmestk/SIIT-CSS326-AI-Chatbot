@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 15, 2023 at 01:58 PM
+-- Generation Time: Nov 18, 2023 at 02:02 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -25,26 +25,6 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AddNewUser` (`in_first_name` VARCHAR(50), `in_last_name` VARCHAR(50), `in_email` VARCHAR(100), `in_country_code` VARCHAR(5), `in_phone_number` VARCHAR(15), `in_date_birth` DATE, `in_password_hash` VARCHAR(512))   BEGIN
-    INSERT INTO Users(first_name, last_name, email, country_code, phone_number, date_birth, password_hash) 
-    VALUES (in_first_name, in_last_name, in_email, in_country_code, in_phone_number, in_date_birth, in_password_hash);
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `GetAllSessionsAndMessagesForUser` (IN `userId` INT)   BEGIN
-    SELECT u.id AS user_id, 
-           u.email AS user_email, 
-           s.id AS session_id, 
-           m.model_name, 
-           m.version, 
-           msg.id AS message_id, 
-           msg.content
-    FROM Users u
-    JOIN Sessions s ON u.id = s.user_id
-    JOIN ModelMetadata m ON s.model_metadata_id = m.id
-    JOIN Messages msg ON s.id = msg.session_id
-    WHERE u.id = userId;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SoftDeleteFeedback` (IN `messageId` INT)   BEGIN
     UPDATE ModelFeedback
     SET deleted_at = CURRENT_TIMESTAMP
@@ -71,7 +51,7 @@ DELIMITER ;
 
 CREATE TABLE `messages` (
   `id` int(11) NOT NULL,
-  `session_id` int(11) DEFAULT NULL,
+  `session_id` int(11) NOT NULL,
   `content` text NOT NULL,
   `sender` enum('user','bot') NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -84,13 +64,8 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`id`, `session_id`, `content`, `sender`, `timestamp`, `deleted_at`, `user_question_message_id`) VALUES
-(3, 4, 'sadasdadadadasdada', 'user', '2023-11-14 05:37:46', NULL, NULL),
-(4, 4, 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz', 'bot', '2023-11-14 05:38:12', NULL, 3),
-(5, 4, 'asssssssssssssssssssssssssssssssssssss', 'user', '2023-11-14 05:39:55', NULL, NULL),
-(6, 4, '555555555555555555555555555555555555555555555555555555555555555555555555555', 'bot', '2023-11-14 05:40:20', NULL, 5),
-(7, 4, 'My name is BSTHUN', 'user', '2023-11-15 07:43:17', NULL, NULL),
-(8, 4, 'My name is BSTHUN The god of sql and php ♥', 'user', '2023-11-15 07:44:05', NULL, NULL),
-(9, 4, ' Hi Bsthuen is my name as well. I was born in 1985.', 'bot', '2023-11-15 07:44:05', NULL, 8);
+(1, 2, 'Hello my name is Games', 'user', '2023-11-18 13:36:25', NULL, NULL),
+(2, 2, ' Hi Games is a great name for a game. What kind of games do you like?', 'bot', '2023-11-18 13:36:25', NULL, 1);
 
 --
 -- Triggers `messages`
@@ -138,19 +113,7 @@ CREATE TABLE `modelmetadata` (
 --
 
 INSERT INTO `modelmetadata` (`id`, `model_name`, `version`, `description`, `date_added`, `deleted_at`) VALUES
-(1, 'ChatBotModel', 'v1.0', 'Initial version of our chatbot model.', '2023-10-24 02:27:42', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `non_default_usersettings`
---
-
-CREATE TABLE `non_default_usersettings` (
-  `user_id` int(11) NOT NULL,
-  `theme` enum('dark','light') DEFAULT 'dark',
-  `language` enum('en','th') DEFAULT 'en'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+(2, 'facebook-blenderbot-400M-distill', '1', 'Building open-domain chatbots is a challenging area for machine learning research. While prior work has shown that scaling neural models in the number of parameters and the size of the data they are trained on gives improved results, we show that other ingredients are important for a high-performing chatbot. Good conversation requires a number of skills that an expert conversationalist blends in a seamless way: providing engaging talking points and listening to their partners, both asking and answering questions, and displaying knowledge, empathy and personality appropriately, depending on the situation. We show that large scale models can learn these skills when given appropriate training data and choice of generation strategy. We build variants of these recipes with 90M, 2.7B and 9.4B parameter neural models, and make our models and code publicly available. Human evaluations show our best models are superior to existing approaches in multi-turn dialogue in terms of engagingness and humanness measurements. We then discuss the limitations of this work by analyzing failure cases of our models.', '2023-11-17 11:39:58', NULL);
 
 -- --------------------------------------------------------
 
@@ -160,7 +123,7 @@ CREATE TABLE `non_default_usersettings` (
 
 CREATE TABLE `savedresponses` (
   `message_id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
   `saved_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -172,12 +135,12 @@ CREATE TABLE `savedresponses` (
 
 CREATE TABLE `sessions` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `model_metadata_id` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  `model_metadata_id` int(11) NOT NULL DEFAULT '2',
   `start_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_use` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `name` varchar(255) NOT NULL
+  `name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -185,12 +148,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `model_metadata_id`, `start_time`, `last_use`, `deleted_at`, `name`) VALUES
-(1, 5, 1, '2023-11-14 02:20:02', '2023-11-14 02:20:02', NULL, 'ZZZ'),
-(2, 5, 1, '2023-11-14 02:20:15', '2023-11-14 02:20:15', NULL, 'XXXX'),
-(3, 5, 1, '2023-11-14 02:20:24', '2023-11-14 02:20:24', NULL, 'ASDF'),
-(4, 5, 1, '2023-11-14 02:21:07', '2023-11-15 07:44:05', NULL, 'HELLO WWW'),
-(5, 5, 1, '2023-11-14 02:21:07', '2023-11-14 02:21:07', NULL, 'AZXCSEWQ'),
-(6, 3, 1, '2023-11-14 02:21:15', '2023-11-14 02:21:15', NULL, 'HGHGHG');
+(1, 10, 2, '2023-11-18 02:13:31', '2023-11-18 02:13:31', NULL, 'Hello World'),
+(2, 10, 2, '2023-11-18 13:35:39', '2023-11-18 13:36:25', NULL, 'Muk');
 
 -- --------------------------------------------------------
 
@@ -217,11 +176,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `country_code`, `phone_number`, `date_birth`, `password_hash`, `date_joined`, `last_login`, `deleted_at`) VALUES
-(3, 'Thanaphat', 'Khemniwat', 'gtk@gmail.com', '+66', '0935789539', '2001-06-19', '$2y$10$AjuEv0qTleQMVt4CXyXt2.KazxRUNOP85SzqKpQOr45ppYyk2Wt02', '2023-11-07 04:12:56', '2023-11-07 04:12:56', NULL),
-(5, 'Games', 'GTK', 'g.khemniwat@gmail.com', '+66', '0810830880', '2023-11-04', '$2y$10$kNJod6u81HRFX15T1tXxW.s6OwkrzZIYKnTMn0XLqJP72Tts3yKrq', '2023-11-07 04:50:56', '2023-11-07 04:50:56', NULL),
-(7, 'aaa', 'bbb', 'ccc@ddd.com', '+66', '0000000000', '2023-11-01', '$2y$10$tMM14yogM9hUL4qtAhXQK.gknTa2g2dTxSkC04sDkhvBN7PnZhs7O', '2023-11-07 05:26:26', '2023-11-07 05:26:26', NULL),
-(8, 'Mukkk', 'aasdad', 'asda@asda.com', '+66', '0888888888', '2015-02-13', '$2y$10$r2D.IyDS8fNIfomo6kjCnO34CC4I17WQqm8Vtih.suVgctxPU2BAy', '2023-11-14 07:30:28', '2023-11-14 07:30:28', NULL),
-(9, 'sadsadas', 'dsadsad', 'bs@bsthun.com', '+66', '0845321999', '2023-11-09', '$2y$10$rZ8k3fS6tDwEX4p05jgr4uZTJ7sHm6SuQG66Se2LpJaYDSmjN6/Ru', '2023-11-15 06:26:27', '2023-11-15 06:26:27', NULL);
+(10, 'Thanaphat', 'Khemniwat', 'g.khemniwat@gmail.com', '+66', '0935789539', '2001-06-19', '$2y$10$zFM3qPoEz2uglhAlPMi43ONE8SsR.RHDzZggMPXbgzHqJRSTVecOq', '2023-11-17 11:33:14', '2023-11-17 11:33:14', NULL);
 
 -- --------------------------------------------------------
 
@@ -273,12 +228,6 @@ ALTER TABLE `modelmetadata`
   ADD KEY `idx_model_metadata_deleted_at` (`deleted_at`,`model_name`);
 
 --
--- Indexes for table `non_default_usersettings`
---
-ALTER TABLE `non_default_usersettings`
-  ADD PRIMARY KEY (`user_id`);
-
---
 -- Indexes for table `savedresponses`
 --
 ALTER TABLE `savedresponses`
@@ -311,25 +260,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `modelmetadata`
 --
 ALTER TABLE `modelmetadata`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `sessions`
 --
 ALTER TABLE `sessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
@@ -347,12 +296,6 @@ ALTER TABLE `messages`
 --
 ALTER TABLE `modelfeedback`
   ADD CONSTRAINT `modelfeedback_ibfk_1` FOREIGN KEY (`message_id`) REFERENCES `messages` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `non_default_usersettings`
---
-ALTER TABLE `non_default_usersettings`
-  ADD CONSTRAINT `non_default_usersettings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `savedresponses`
