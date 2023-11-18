@@ -35,23 +35,21 @@
                         <h3 class="text-center mb-4" id="header_new_page">Profile</h3>
 
                         <!-- Personal Information Section -->
-                        <div class="mb-3">
-                            <div class="row g-2 d-flex justify-content-center align-items-center">
-                                <div class="col border">
-                                    <p><strong>First Name: </strong> </p>
-                                </div>
-                                <div class="col border">
-                                    <p><strong>Last Name: </strong> </p>
-                                </div>
-                            </div>
+                        <div class="mb-3 border p-1" id="s_first_name">
+                            <p><strong>First Name: </strong> </p>
                         </div>
-                        <div class="mb-3 border p-1">
+
+                        <div class="mb-3 border p-1" id="s_last_name">
+                            <p><strong>Last Name: </strong> </p>
+                        </div>
+                        
+                        <div class="mb-3 border p-1" id="s_email">
                             <p><strong>Email: </strong> </p>
                         </div>
-                        <div class="mb-3 border p-1">
+                        <div class="mb-3 border p-1" id="s_phone_number">
                             <p><strong>Phone Number: </strong> </p>
                         </div>
-                        <div class="mb-3 border p-1">
+                        <div class="mb-3 border p-1" id="s_date_of_birth">
                             <p><strong>Date of Birth: </strong> </p>
                         </div>
                         <!-- End of Personal Information Section -->
