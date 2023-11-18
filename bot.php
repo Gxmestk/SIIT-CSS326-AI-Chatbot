@@ -42,46 +42,64 @@ function callHuggingFaceAPI($userInput)
 
 // Check for form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_message'])) {
-    // Call the Hugging Face API with the user's message
-    $apiResponse = callHuggingFaceAPI($_POST['user_message']);
+    $session_id = $_POST['session_id'];
+    $content = $_POST['user_message'];
+    // Check if the message is a command to change the session name
+    if (preg_match('/^\/name\s+(.+)/', $content, $matches)) {
+        $newSessionName = $matches[1]; // Capture the new name from the regex match
 
-    // Process the API's response
-    if ($apiResponse) {
-        /*CREATE TABLE `messages` (
-  `id` int(11) NOT NULL,
-  `session_id` int(11) DEFAULT NULL,
-  `content` text NOT NULL,
-  `sender` enum('user','bot') NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `user_question_message_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;*/
+        // Update the session name in the database
+        $updateSession = $conn->prepare("UPDATE sessions SET name = ? WHERE id = ?");
+        $updateSession->bind_param("si", $newSessionName, $session_id);
+        $updateSession->execute();
 
-        //insert bot message 
-        $sql = "INSERT INTO messages (session_id, content, sender, user_question_message_id) VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
+        // Check if the update was successful
 
-        $session_id = $_POST['session_id'];
-        $content = $_POST['user_message'];
-        $sender = "user";
-        $user_question_message_id = NULL;
-        $stmt->bind_param("issi", $session_id, $content, $sender, $user_question_message_id);
+        if ($updateSession->affected_rows > 0) {
+            // Success - the session name was updated
+            // Redirect back to the chat with a success message (or handle as appropriate)
+            header("Location: chat.php?session_id=$session_id");
+        } else {
+            // Error - the session name was not updated
 
-        if (!$stmt->execute()) {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-
-        //get id from statement execute()
-        $last_id = $stmt->insert_id;
-
-        $session_id = $_POST['session_id'];
-        $content = $apiResponse["generated_text"];
-        $sender = "bot";
-        $user_question_message_id = $last_id;
-        $stmt->bind_param("issi", $session_id, $content, $sender, $user_question_message_id);
-        if (!$stmt->execute()) {
             die("Error: " . $sql . "<br>" . $conn->error);
         }
+        $updateSession->close();
+    } else {
+        // The message is not a command - handle normal message processing here
+        // Call the Hugging Face API with the user's message
+        $apiResponse = callHuggingFaceAPI($_POST['user_message']);
+
+        // Process the API's response
+        if ($apiResponse) {
+
+
+            //insert bot message 
+            $sql = "INSERT INTO messages (session_id, content, sender, user_question_message_id) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+
+            $sender = "user";
+            $user_question_message_id = NULL;
+            $stmt->bind_param("issi", $session_id, $content, $sender, $user_question_message_id);
+
+            if (!$stmt->execute()) {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+
+            //get id from statement execute()
+            $last_id = $stmt->insert_id;
+
+            $session_id = $_POST['session_id'];
+            $content = $apiResponse["generated_text"];
+            $sender = "bot";
+            $user_question_message_id = $last_id;
+            $stmt->bind_param("issi", $session_id, $content, $sender, $user_question_message_id);
+            if (!$stmt->execute()) {
+                die("Error: " . $sql . "<br>" . $conn->error);
+            }
+        }
+
+
 
         $stmt->close();
     }

@@ -51,6 +51,23 @@ function fetchSessionMessages($sessionId, $conn)
     return $messages;
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_chat'])) {
+    $userId = $_SESSION['user_id']; // Assuming the user is logged in and their ID is in the session
+
+
+    // Insert a new session into the database
+    $insertSession = $conn->prepare("INSERT INTO sessions (user_id) VALUES (?)");
+    $insertSession->bind_param("i", $userId);
+    $insertSession->execute();
+
+    // Get the ID of the newly created session
+    $newSessionId = $conn->insert_id;
+
+    // Redirect to the new chat session
+    header("Location: chat.php?session_id=$newSessionId");
+    exit();
+}
+
 // Fetch sessions and messages if a session ID is provided.
 $sessions = fetchUserSessions($_SESSION['user_id'], $conn);
 
@@ -61,6 +78,8 @@ if (isset($_GET['session_id']) && filter_var($_GET['session_id'], FILTER_VALIDAT
     $sessionId = $_GET['session_id'];
     $messages = fetchSessionMessages($sessionId, $conn);
 }
+
+
 
 // Close the database connection.
 $conn->close();
@@ -84,7 +103,9 @@ $conn->close();
 
     <div class="menu">
         <div class="p-5 d-flex align-items-center">
-            <a href="login.php" class="btn btn-outline-primary flex-grow-1 ">New Chat</a>
+            <form action="chat.php" method="post">
+                <button type="submit" name="new_chat" class="btn btn-outline-primary flex-grow-1 ">New Chat</button>
+            </form>
             <a href="setting.php" class="btn btn-outline-primary ms-3 flex-grow-1">Setting</a>
         </div>
 
