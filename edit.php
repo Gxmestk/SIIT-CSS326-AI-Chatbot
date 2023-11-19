@@ -1,3 +1,82 @@
+<?php
+// Include the database connection.
+include 'db.php';
+
+// Start the session
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to the login page or handle unauthorized access
+    header('Location: login.php'); // Replace 'login.php' with your login page URL
+    exit();
+}
+
+// Get the user ID from the session
+$userId = $_SESSION['user_id'];
+
+$error_message = '';
+$success_message = '';
+
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $first_name = trim($_POST['input_first_name']);
+    $last_name = trim($_POST['input_last_name']);
+    $email = trim($_POST['input_email']);
+    $phone_number = trim($_POST['input_phone_number']);
+    $date_of_birth = trim($_POST['input_date_of_birth']);
+    $password = $_POST['input_password'];
+
+    // Validate form data (add your validation logic here)
+    if (empty($first_name) || empty($last_name) || empty($email) || empty($phone_number) || empty($date_of_birth)) {
+        $error_message = 'All fields are required and cannot be left blank.';
+    } else {
+        // Update user information in the database
+        $query = "UPDATE users SET
+          first_name = ?,
+          last_name = ?,
+          email = ?,
+          phone_number = ?,
+          date_birth = ?,
+          password_hash = ? WHERE id = ?";
+
+        $stmt = $conn->prepare($query);
+
+        if ($stmt === false) {
+            // Handle the error. Display the SQL error for debugging purposes.
+            $error_message = 'Error preparing the SQL statement: ' . $conn->error;
+        } else {
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+            // Assuming $session_id contains the user's ID
+            //$stmt->bind_param("ssssssi", $first_name, $last_name, $email, $phone_number, $date_of_birth, $hashed_password, $session_id);
+
+            $userId = $_SESSION['user_id'];
+            $stmt->bind_param("ssssssi", $first_name, $last_name, $email, $phone_number, $date_of_birth, $hashed_password, $userId);
+
+
+            if ($stmt->execute()) {
+                $success_message = 'User information updated successfully.';
+            } else {
+                $error_message = 'Failed to update user information: ' . $stmt->error;
+            }
+
+            $stmt->close();
+        }
+
+        // Close the database connection if it's still open.
+        if ($conn) {
+            $conn->close();
+        }
+            }
+}
+        ?>
+
+
+
 <!DOCTYPE html> <!-- Declaration for the document to be HTML5 -->
 <html lang="en"> <!-- The root element of the page, with language set to English -->
 
@@ -11,12 +90,19 @@
 </head>
 
 <body>
-    <!-- Display the error message if it exists using Bootstrap alert component -->
     <?php if ($error_message != ''): ?>
         <div class="alert alert-danger mt-5" role="alert">
             <?php echo htmlspecialchars($error_message); ?>
         </div>
     <?php endif; ?>
+
+    <!-- Display success message if it exists -->
+    <?php if ($success_message != ''): ?>
+        <div class="alert alert-success mt-5" role="alert">
+            <?php echo htmlspecialchars($success_message); ?>
+        </div>
+    <?php endif; ?>
+
     <!-- Top-right corner language switch and dark mode toggle -->
     <div class="position-absolute top-0 end-0 p-3">
         <div class="d-flex align-items-center"> <!-- Flex container for inline alignment of elements -->
@@ -74,7 +160,7 @@
                             </div> <!-- Closing div tag for the password input field -->
 
                             <div class="d-flex justify-content-center align-items-center">
-                                <button type="confirm" class="btn btn-primary w-100" id="button_confirm">Confirm</button>
+                                <button  type="confirm" class="btn btn-primary w-100" id="button_confirm">Confirm</button>
                                 <a href="setting.php" class="btn btn-primary w-100" id="button_back">Back</a>
                             </div>
 
