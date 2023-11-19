@@ -1,3 +1,42 @@
+<?php
+// Include the database connection script.
+require 'db.php';
+
+// Start the session
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to the login page or handle unauthorized access
+    header('Location: login.php'); // Replace 'login.php' with your login page URL
+    exit();
+}
+
+// Get the user ID from the session
+$userId = $_SESSION['user_id'];
+
+// Function to fetch user information
+function fetchUserInfo($userId, $conn)
+{
+    $userInfo = [];
+    $query = "SELECT first_name, last_name, email, phone_number, date_birth FROM users WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        $userInfo = $row;
+    }
+
+    $stmt->close();
+    return $userInfo;
+}
+
+// Fetch user information
+$userInfo = fetchUserInfo($userId, $conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,23 +49,6 @@
 </head>
 
 <body>
-    <!-- Top-right corner language switch and dark mode toggle -->
-    <div class="position-absolute top-0 end-0 p-3">
-        <div class="d-flex align-items-center"> <!-- Flex container for inline alignment of elements -->
-            <!-- Language Switch Buttons -->
-            <div class="btn-group" role="group" aria-label="Language switch">
-                <button type="button" class="btn btn-outline-secondary btn-sm btn-language" id="btn-language-th">TH</button> <!-- Button for Thai language -->
-                <button type="button" class="btn btn-outline-secondary btn-sm btn-language" id="btn-language-en">EN</button> <!-- Button for English language -->
-            </div>
-
-            <!-- Dark Mode Toggle Switch -->
-            <div class="form-check form-switch ms-3">
-                <input class="form-check-input" type="checkbox" id="darkModeToggle"> <!-- Checkbox input for dark mode toggle -->
-                <label class="form-check-label" for="darkModeToggle" id="label_dark_mode">Dark Mode</label> <!-- Label for the dark mode toggle -->
-            </div>
-        </div>
-    </div>
-
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-sm-10 col-md-8 col-lg-6">
@@ -36,21 +58,23 @@
 
                         <!-- Personal Information Section -->
                         <div class="mb-3 border p-1" id="s_first_name">
-                            <p><strong>First Name: </strong> </p>
+                            <p><strong>First Name: </strong><?php echo $userInfo['first_name']; ?></p>
                         </div>
 
                         <div class="mb-3 border p-1" id="s_last_name">
-                            <p><strong>Last Name: </strong> </p>
+                            <p><strong>Last Name: </strong><?php echo $userInfo['last_name']; ?></p>
                         </div>
-                        
+
                         <div class="mb-3 border p-1" id="s_email">
-                            <p><strong>Email: </strong> </p>
+                            <p><strong>Email: </strong><?php echo $userInfo['email']; ?></p>
                         </div>
+
                         <div class="mb-3 border p-1" id="s_phone_number">
-                            <p><strong>Phone Number: </strong> </p>
+                            <p><strong>Phone Number: </strong><?php echo $userInfo['phone_number']; ?></p>
                         </div>
+
                         <div class="mb-3 border p-1" id="s_date_of_birth">
-                            <p><strong>Date of Birth: </strong> </p>
+                            <p><strong>Date of Birth: </strong><?php echo $userInfo['date_birth']; ?></p>
                         </div>
                         <!-- End of Personal Information Section -->
 
@@ -59,10 +83,10 @@
                             <a href="edit.php" class="btn btn-primary w-100" id="edit_titles">Edit Profile</a>
                             <a href="delete.php" class="btn btn-primary w-100" id="delete_button">Delete Account</a>
                         </div>
-                        
+
                         <div class="center text-center mb-2">
-                          <a href="chat.php" class="btn btn-primary w-100" id="button_back">Back</a>
-                         </div>
+                            <a href="chat.php" class="btn btn-primary w-100" id="button_back">Back</a>
+                        </div>
                         <!-- End of Edit and Delete buttons -->
 
                     </div>
