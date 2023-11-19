@@ -49,6 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif ($password !== $confirm_password) {
         // Check if passwords match.
         $error_message = 'Passwords do not match.';
+    } elseif (strlen($phone_number) !== 10 || !is_numeric($phone_number)) {
+        // Check if the phone number has exactly 10 digits and is numeric.
+        $error_message = 'Phone number must be a 10-digit numeric value.';
+    } elseif (strtotime($date_of_birth) >= strtotime('now')) {
+        // Check if the date of birth is in the future.
+        $error_message = 'Invalid date of birth.';
     } else {
         // Hash the password.
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
@@ -63,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $error_message = 'An error occurred while creating your account.';
         }
     }
+
     // Close the database connection.
     $conn->close();
 } elseif (basename($_SERVER['PHP_SELF']) != 'sign_up.php') {
