@@ -79,13 +79,17 @@ $userInfo = fetchUserInfo($userId, $conn);
                         <!-- End of Personal Information Section -->
 
                         <!-- Edit and Delete buttons -->
-                        <div class="d-flex justify-content-center align-items-center mb-3">
+                        <div class="d-flex justify-content-center align-items-center mb-2">
                             <a href="edit.php" class="btn btn-primary w-100" id="edit_titles">Edit Profile</a>
                             <a href="delete.php" class="btn btn-primary w-100" id="delete_button">Delete Account</a>
                         </div>
 
                         <div class="center text-center mb-2">
                             <a href="chat.php" class="btn btn-primary w-100" id="button_back">Back</a>
+                        </div>
+
+                        <div class="center text-center mb-2">
+                            <a href="login.php" class="btn btn-primary w-100" id="button_back">Log out</a>
                         </div>
                         <!-- End of Edit and Delete buttons -->
 
