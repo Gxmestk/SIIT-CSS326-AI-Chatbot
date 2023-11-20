@@ -300,7 +300,7 @@ CREATE TABLE `usersessionmessages` (
 --
 DROP TABLE IF EXISTS `model_feedback_summary`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `model_feedback_summary`  AS SELECT `mm`.`id` AS `id`, `mm`.`model_name` AS `model_name`, `mm`.`version` AS `version`, `mm`.`description` AS `description`, `mm`.`date_added` AS `date_added`, count((case when (`mf`.`feedback` = 'upvote') then 1 end)) AS `upvote_count`, count((case when (`mf`.`feedback` = 'downvote') then 1 end)) AS `downvote_count`, substring_index(group_concat(`mf`.`comment` order by `mf`.`timestamp` DESC separator '||'),'||',3) AS `latest_comments` FROM (((`modelmetadata` `mm` join `sessions` `s` on((`mm`.`id` = `s`.`model_metadata_id`))) join `messages` `m` on((`s`.`id` = `m`.`session_id`))) left join `modelfeedback` `mf` on((`m`.`id` = `mf`.`message_id`))) GROUP BY `mm`.`id``id`  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `model_feedback_summary`  AS SELECT `mm`.`id` AS `id`, `mm`.`model_name` AS `model_name`, `mm`.`version` AS `version`, `mm`.`description` AS `description`, `mm`.`date_added` AS `date_added`, count((case when (`mf`.`feedback` = 'upvote') then 1 end)) AS `upvote_count`, count((case when (`mf`.`feedback` = 'downvote') then 1 end)) AS `downvote_count`, substring_index(group_concat(`mf`.`comment` order by `mf`.`timestamp` DESC separator '||'),'||',3) AS `latest_comments` FROM (((`modelmetadata` `mm` join `sessions` `s` on((`mm`.`id` = `s`.`model_metadata_id`))) join `messages` `m` on((`s`.`id` = `m`.`session_id`))) left join `modelfeedback` `mf` on((`m`.`id` = `mf`.`message_id`))) GROUP BY `mm`.`id` ;
 
 -- --------------------------------------------------------
 
