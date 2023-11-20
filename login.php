@@ -3,7 +3,7 @@
 session_start();
 
 // Include the database connection.
-include 'db.php'; // Using require_once to ensure the script stops if the file is missing.
+require 'db.php'; // Using require_once to ensure the script stops if the file is missing.
 
 $error_message = ''; // Initialize an empty error message.
 
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate email and password fields.
     if ($email !== '' && $password !== '') {
         // Prepare the SQL statement to prevent SQL injection.
-        if ($stmt = $conn->prepare("SELECT id, password_hash FROM users WHERE email = ?")) {
+        if ($stmt = $conn->prepare("SELECT id, password_hash, deleted_at FROM users WHERE email = ?")) {
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -23,6 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($result->num_rows === 1) {
                 // Fetch associative array from result set.
                 $user = $result->fetch_assoc();
+
+                // Check if the account is marked as deleted.
+                if ($user['deleted_at'] !== null) {
+                    // Redirect to restore_user.php with a message
+                    $_SESSION['restore_user_id'] = $user['id'];
+                    header("Location: restore_user.php");
+                    exit();
+                }
 
                 // Check if the hashed password matches.
                 if (password_verify($password, $user['password_hash'])) {
@@ -58,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 
 
@@ -131,4 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="themeHandler.js"></script>
 
     <!-- Bootstrap's JavaScript bundle that includes jQuery -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95"></script>
+</body>
+
+</html>

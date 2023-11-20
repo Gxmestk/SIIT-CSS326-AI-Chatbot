@@ -1,3 +1,51 @@
+<?php
+// Start the session to access session variables
+session_start();
+
+// Include database connection
+require 'db.php';
+
+$message = ''; // Empty message string
+$alertClass = ''; // Will be used to set the class for Bootstrap alert
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Check if the user clicked "Yes"
+    if (isset($_POST['confirm_deletion']) && $_POST['confirm_deletion'] == 'yes') {
+        // Retrieve the user ID from the session
+        $userId = $_SESSION['user_id'];
+
+        // Call the SoftDeleteUser stored procedure
+        if ($stmt = $conn->prepare("CALL SoftDeleteUser(?)")) {
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+
+            // Check for errors
+            if ($stmt->error) {
+                $message = "Error during deletion: " . $stmt->error;
+                $alertClass = 'alert-danger'; // Bootstrap class for error
+            } else {
+                // Check for successful execution of the stored procedure
+                if ($stmt->affected_rows > 0) {
+                    $message = "Record deleted successfully!";
+                    $alertClass = 'alert-success'; // Bootstrap class for success
+                    // Log the user out and redirect to the login page or home page
+                    session_destroy();
+                    header("Location: login.php");
+                    exit();
+                } else {
+                    $message = "No record was deleted. It may already have been deleted, or the user ID may not exist.";
+                    $alertClass = 'alert-warning'; // Bootstrap class for warning
+                }
+            }
+        } else {
+            $message = "Preparation error: " . $conn->error;
+            $alertClass = 'alert-danger'; // Bootstrap class for error
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,21 +55,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> <!-- Links to the Bootstrap CSS for styling -->
     <link href="user_setting.css" rel="stylesheet"> <!-- Links to your custom CSS for additional styling -->
 </head>
-<body>
 
-<?php
-// Check if the form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Check if the user clicked "Yes"
-    if (isset($_POST['yes'])) {
-        // Perform the delete operation or any other action here
-        echo "Record deleted successfully!";
-    } elseif (isset($_POST['no'])) {
-        // User clicked "No"
-        echo "Deletion canceled.";
-    }
-}
-?>
 
 <body class="d-flex justify-content-center align-items-center vh-100">
 
@@ -42,13 +76,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
- <div class="row"> <!-- Bootstrap row for layout -->
+    <div class="row"> <!-- Bootstrap row for layout -->
         <div class="col-12 text-center" style="width: 500px;"> <!-- Column with centered text and fixed width -->
-            <h1 class="mb-2" id="delete_title"> Are you sure you want to delete your account?</h1> <!-- Main heading -->
-            <br>    
-            <a href=" " class="btn btn-outline-primary btn-lg mb-2 w-50" id="button_yes">YES</a> <!-- Link styled as button for logging in -->
-            <br> <!-- Line break -->
-            <a href="setting.php" class="btn btn-outline-primary btn-lg w-50" id="button_no">NO</a> <!-- Link styled as button for signing up -->
+            <h1 class="mb-2" id="delete_title">Are you sure you want to delete your account?</h1> <!-- Main heading -->
+            <form method="POST" action="">
+                <button type="submit" name="confirm_deletion" value="yes" class="btn btn-outline-primary btn-lg mb-2 w-50" id="button_yes">YES</button> <!-- Submit button for "Yes" -->
+                <br> <!-- Line break -->
+                <a href="setting.php" class="btn btn-outline-primary btn-lg w-50" id="button_no">NO</a> <!-- Link styled as button for "No" -->
+            </form>
         </div>
     </div>
 
