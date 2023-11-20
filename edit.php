@@ -16,7 +16,8 @@ $success_message = '';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+{
     $first_name = trim($_POST['input_first_name']);
     $last_name = trim($_POST['input_last_name']);
     $email = trim($_POST['input_email']);
@@ -28,25 +29,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $query = "SELECT * FROM users WHERE id = ?";
     $stmt = $conn->prepare($query);
 
-    if ($stmt) {
+    if ($stmt) 
+    {
         $stmt->bind_param("i", $userId);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
+        if ($result->num_rows > 0) 
+        {
             $user = $result->fetch_assoc();
 
-            if (!password_verify($password, $user['password_hash'])) {
-                $error_message = 'Passwords do not match.';
-            } else {
                 // Validate form data
-                $validation_result = validateFormData($first_name, $last_name, $email, $phone_number, $date_of_birth);
+            $validation_result = validateFormData($first_name, $last_name, $email, $phone_number, $date_of_birth, $password, $user);
 
-                if ($validation_result !== true) {
+            if ($validation_result !== true) 
+            {
                     $error_message = $validation_result;
-                } else {
-                    // Update user information in the database
-                    $update_query = "UPDATE users SET
+            } 
+            else 
+            {
+                // Update user information in the database
+                $update_query = "UPDATE users SET
                         first_name = ?,
                         last_name = ?,
                         email = ?,
@@ -55,34 +58,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         password_hash = ?
                         WHERE id = ?";
 
-                    // Prepare and execute the update query
-                    $update_stmt = $conn->prepare($update_query);
-                    $update_stmt->bind_param("ssssssi", $first_name, $last_name, $email, $phone_number, $date_of_birth, $password, $userId);
-                    $update_stmt->execute();
+                // Prepare and execute the update query
+                $password_hash = password_hash($password, PASSWORD_DEFAULT);
+                $update_stmt = $conn->prepare($update_query);
+                $update_stmt->bind_param("ssssssi", $first_name, $last_name, $email, $phone_number, $date_of_birth, $password_hash, $userId);
+                $update_stmt->execute();
 
-                    if ($update_stmt->affected_rows > 0) {
-                        $success_message = 'Profile updated successfully.';
-                    } else {
-                        $error_message = 'Failed to update profile.';
-                    }
+                if ($update_stmt->affected_rows > 0) 
+                {
+                    $success_message = 'Profile updated successfully.';
+                } 
+                else 
+                {
+                    $error_message = 'Failed to update profile.';
+                }
 
                     $update_stmt->close();
-                }
             }
-        } else {
+            
+        } 
+        else 
+        {
             $error_message = 'User not found.';
         }
-
         $stmt->close();
-    } else {
+    } 
+    else 
+    {
         $error_message = 'Error preparing the SQL statement: ' . $conn->error;
     }
-
     // Close the database connection
     $conn->close();
 }
 
-function validateFormData($first_name, $last_name, $email, $phone_number, $date_of_birth)
+
+function validateFormData($first_name, $last_name, $email, $phone_number, $date_of_birth, $password, $user)
 {
     if (empty($first_name) || empty($last_name) || empty($email) || empty($phone_number) || empty($date_of_birth)) {
         return 'All fields are required and cannot be left blank.';
@@ -92,7 +102,8 @@ function validateFormData($first_name, $last_name, $email, $phone_number, $date_
         return 'Phone number must be a 10-digit numeric value.';
     } elseif (strtotime($date_of_birth) >= strtotime('now')) {
         return 'Invalid date of birth.';
-    }
+    } elseif (!password_verify($password, $user['password_hash'])) {
+        $error_message = 'Passwords do not match.';}
 
     return true; // Validation passed
 }
