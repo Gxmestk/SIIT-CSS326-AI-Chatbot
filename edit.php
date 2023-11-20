@@ -33,6 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate form data (add your validation logic here)
     if (empty($first_name) || empty($last_name) || empty($email) || empty($phone_number) || empty($date_of_birth)) {
         $error_message = 'All fields are required and cannot be left blank.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error_message = "Invalid email address";
+    } elseif (strlen($phone_number) !== 10 || !is_numeric($phone_number)) {
+        // Check if the phone number has exactly 10 digits and is numeric.
+        $error_message = 'Phone number must be a 10-digit numeric value.';
+    } elseif (strtotime($date_of_birth) >= strtotime('now')) {
+        // Check if the date of birth is in the future.
+        $error_message = 'Invalid date of birth.';
     } else {
         // Update user information in the database
         $query = "UPDATE users SET
@@ -66,6 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmt->close();
         }
+
+
 
         // Close the database connection if it's still open.
         if ($conn) {
@@ -160,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div> <!-- Closing div tag for the password input field -->
 
                             <div class="d-flex justify-content-center align-items-center">
-                                <button  type="confirm" class="btn btn-primary w-100" id="button_confirm">Confirm</button>
+                                <button  type="submit" class="btn btn-primary w-100" id="button_confirm">Confirm</button>                          
                                 <a href="setting.php" class="btn btn-primary w-100" id="button_back">Back</a>
                             </div>
 
