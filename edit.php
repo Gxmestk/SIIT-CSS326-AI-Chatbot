@@ -1,14 +1,20 @@
 <?php
+// Include the database connection.
 include 'db.php';
+
+// Start the session
 session_start();
 
-// Redirect to login page if user is not logged in
+// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    // Redirect to the login page or handle unauthorized access
+    header('Location: login.php'); // Replace 'login.php' with your login page URL
     exit();
 }
 
+// Get the user ID from the session
 $userId = $_SESSION['user_id'];
+
 $error_message = '';
 $success_message = '';
 
@@ -24,80 +30,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $date_of_birth = trim($_POST['input_date_of_birth']);
     $password = $_POST['input_password'];
 
-    // Fetch user information from the database
-    $query = "SELECT * FROM users WHERE id = ?";
-    $stmt = $conn->prepare($query);
+    // Validate form data (add your validation logic here)
+    if (empty($first_name) || empty($last_name) || empty($email) || empty($phone_number) || empty($date_of_birth)) {
+        $error_message = 'All fields are required and cannot be left blank.';
+    } else {
+        // Update user information in the database
+        $query = "UPDATE users SET
+          first_name = ?,
+          last_name = ?,
+          email = ?,
+          phone_number = ?,
+          date_birth = ?,
+          password_hash = ? WHERE id = ?";
 
-    if ($stmt) {
-        $stmt->bind_param("i", $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $conn->prepare($query);
 
-        if ($result->num_rows > 0) {
-            $user = $result->fetch_assoc();
-
-            if (!password_verify($password, $user['password_hash'])) {
-                $error_message = 'Passwords do not match.';
-            } else {
-                // Validate form data
-                $validation_result = validateFormData($first_name, $last_name, $email, $phone_number, $date_of_birth);
-
-                if ($validation_result !== true) {
-                    $error_message = $validation_result;
-                } else {
-                    // Update user information in the database
-                    $update_query = "UPDATE users SET
-                        first_name = ?,
-                        last_name = ?,
-                        email = ?,
-                        phone_number = ?,
-                        date_birth = ?,
-                        password_hash = ?
-                        WHERE id = ?";
-
-                    // Prepare and execute the update query
-                    $update_stmt = $conn->prepare($update_query);
-                    $update_stmt->bind_param("ssssssi", $first_name, $last_name, $email, $phone_number, $date_of_birth, $password, $userId);
-                    $update_stmt->execute();
-
-                    if ($update_stmt->affected_rows > 0) {
-                        $success_message = 'Profile updated successfully.';
-                    } else {
-                        $error_message = 'Failed to update profile.';
-                    }
-
-                    $update_stmt->close();
-                }
-            }
+        if ($stmt === false) {
+            // Handle the error. Display the SQL error for debugging purposes.
+            $error_message = 'Error preparing the SQL statement: ' . $conn->error;
         } else {
-            $error_message = 'User not found.';
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+            // Assuming $session_id contains the user's ID
+            //$stmt->bind_param("ssssssi", $first_name, $last_name, $email, $phone_number, $date_of_birth, $hashed_password, $session_id);
+
+            $userId = $_SESSION['user_id'];
+            $stmt->bind_param("ssssssi", $first_name, $last_name, $email, $phone_number, $date_of_birth, $hashed_password, $userId);
+
+
+            if ($stmt->execute()) {
+                $success_message = 'User information updated successfully.';
+            } else {
+                $error_message = 'Failed to update user information: ' . $stmt->error;
+            }
+
+            $stmt->close();
         }
 
-        $stmt->close();
-    } else {
-        $error_message = 'Error preparing the SQL statement: ' . $conn->error;
-    }
-
-    // Close the database connection
-    $conn->close();
+        // Close the database connection if it's still open.
+        if ($conn) {
+            $conn->close();
+        }
+            }
 }
-
-function validateFormData($first_name, $last_name, $email, $phone_number, $date_of_birth)
-{
-    if (empty($first_name) || empty($last_name) || empty($email) || empty($phone_number) || empty($date_of_birth)) {
-        return 'All fields are required and cannot be left blank.';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        return 'Invalid email address';
-    } elseif (strlen($phone_number) !== 10 || !is_numeric($phone_number)) {
-        return 'Phone number must be a 10-digit numeric value.';
-    } elseif (strtotime($date_of_birth) >= strtotime('now')) {
-        return 'Invalid date of birth.';
-    }
-
-    return true; // Validation passed
-}
-?>
-
+        ?>
 
 
 
@@ -184,14 +160,14 @@ function validateFormData($first_name, $last_name, $email, $phone_number, $date_
                             </div> <!-- Closing div tag for the password input field -->
 
                             <div class="d-flex justify-content-center align-items-center">
-                                <button  type="submit" class="btn btn-primary w-100" id="button_confirm">Confirm</button>                          
+                                <button  type="confirm" class="btn btn-primary w-100" id="button_confirm">Confirm</button>
                                 <a href="setting.php" class="btn btn-primary w-100" id="button_back">Back</a>
                             </div>
 
-                            <!-- <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex justify-content-center align-items-center">
                                 <button type="confirm" class="btn btn-primary" id="button_confirm">Confirm</button>
                                 <button type="back" class="btn btn-primary" id="button_back">Back</button>
-                            </div> -->
+                            </div>
 
 
                         </form> <!-- Closes the form tag that would have started before this provided snippet -->

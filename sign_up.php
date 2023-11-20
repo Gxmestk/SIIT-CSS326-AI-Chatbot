@@ -55,10 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif (strtotime($date_of_birth) >= strtotime('now')) {
         // Check if the date of birth is in the future.
         $error_message = 'Invalid date of birth.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error_message = "Invalid email address";
     } else {
         // Hash the password.
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
-
         // Attempt to insert a new user.
         if (insertUser($first_name, $last_name, $email, $phone_number, $date_of_birth, $password_hash, $conn)) {
             // Redirect on successful registration.

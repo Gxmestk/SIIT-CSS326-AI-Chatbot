@@ -20,7 +20,7 @@ require 'db.php';
 function fetchUserSessions($userId, $conn)
 {
     $sessions = [];
-    $query = "SELECT id, name FROM sessions WHERE user_id = ? ORDER BY last_use DESC";
+    $query = "SELECT id, name FROM sessions WHERE user_id = ? AND deleted_at IS NULL ORDER BY last_use DESC";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $userId);
     $stmt->execute();
