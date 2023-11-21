@@ -28,20 +28,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (password_verify($password, $user['password_hash'])) {
                     // Password is correct, set the session variable.
                     $_SESSION['user_id'] = $user['id'];
-
+                    
+                    // Check if the account is marked as deleted.
+                    if ($user['deleted_at'] !== null) {
+                        // Redirect to restore_user.php with a message
+                        $_SESSION['restore_user_id'] = $user['id'];
+                        header("Location: restore_user.php");
+                        exit();
+                    }
                     // Redirect to the chat page and stop script execution.
                     header("Location: chat.php");
                     exit();
                 } else {
                     // Handle incorrect password.
                     $error_message = 'Invalid email or password.';
-                }
-                // Check if the account is marked as deleted.
-                if ($user['deleted_at'] !== null) {
-                    // Redirect to restore_user.php with a message
-                    $_SESSION['restore_user_id'] = $user['id'];
-                    header("Location: restore_user.php");
-                    exit();
                 }
             } else {
                 // Handle no user found.
