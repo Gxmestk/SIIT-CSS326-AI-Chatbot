@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 21, 2023 at 08:44 AM
+-- Generation Time: Nov 21, 2023 at 09:39 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -146,11 +146,7 @@ INSERT INTO `messages` (`id`, `session_id`, `content`, `sender`, `timestamp`, `d
 (47, 5, 'hi', 'user', '2023-11-21 05:56:59', NULL, NULL, '2023-11-21 05:56:59'),
 (48, 5, ' Hi! How are you? I just got back from walking my dog. Do you have any pets?', 'bot', '2023-11-21 05:56:59', NULL, 47, '2023-11-21 05:57:15'),
 (49, 5, 'Oh my god!', 'user', '2023-11-21 06:39:10', NULL, NULL, '2023-11-21 06:39:10'),
-(50, 5, ' I know, right?  I was so mad.  I don\'t know what I would have done if it had happened to me.', 'bot', '2023-11-21 06:39:10', NULL, 49, '2023-11-21 06:39:10'),
-(51, 11, 'Hi ', 'user', '2023-11-21 06:53:38', NULL, NULL, '2023-11-21 06:53:38'),
-(52, 11, ' Hi! How are you? I just got back from a walk with my dog. Do you have any pets?', 'bot', '2023-11-21 06:53:38', NULL, 51, '2023-11-21 06:54:33'),
-(53, 12, 'hola', 'user', '2023-11-21 06:55:05', NULL, NULL, '2023-11-21 06:55:05'),
-(54, 12, ' Holidays are my favorite time of the year.  Do you like holidays?', 'bot', '2023-11-21 06:55:05', NULL, 53, '2023-11-21 06:55:05');
+(50, 5, ' I know, right?  I was so mad.  I don\'t know what I would have done if it had happened to me.', 'bot', '2023-11-21 06:39:10', NULL, 49, '2023-11-21 06:39:10');
 
 --
 -- Triggers `messages`
@@ -186,8 +182,7 @@ INSERT INTO `modelfeedback` (`message_id`, `feedback`, `comment`, `timestamp`, `
 (12, 'downvote', 'bad answer', '2023-11-19 15:51:54', NULL),
 (28, 'downvote', 'weird', '2023-11-20 04:51:23', NULL),
 (32, 'upvote', 'it\'s was fun !!!', '2023-11-20 04:54:20', NULL),
-(42, 'downvote', '', '2023-11-20 13:43:10', NULL),
-(54, 'downvote', 'baddddddd', '2023-11-21 06:55:27', NULL);
+(42, 'downvote', '', '2023-11-20 13:43:10', NULL);
 
 -- --------------------------------------------------------
 
@@ -272,10 +267,7 @@ INSERT INTO `sessions` (`id`, `user_id`, `model_metadata_id`, `start_time`, `las
 (7, 12, 2, '2023-11-20 13:45:26', '2023-11-20 13:45:51', '2023-11-20 13:47:27', '555'),
 (8, 12, 2, '2023-11-20 14:18:31', '2023-11-20 14:18:31', NULL, NULL),
 (9, 12, 2, '2023-11-20 15:19:33', '2023-11-20 15:19:33', NULL, NULL),
-(10, 10, 2, '2023-11-21 06:27:18', '2023-11-21 06:27:18', NULL, NULL),
-(11, 13, 2, '2023-11-21 06:52:50', '2023-11-21 06:53:38', NULL, '123'),
-(12, 13, 2, '2023-11-21 06:54:42', '2023-11-21 06:55:05', '2023-11-21 06:56:23', '555'),
-(13, 13, 2, '2023-11-21 06:59:40', '2023-11-21 06:59:40', NULL, NULL);
+(10, 10, 2, '2023-11-21 06:27:18', '2023-11-21 06:27:18', NULL, 'Yeah\r');
 
 --
 -- Triggers `sessions`
@@ -318,7 +310,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `country_code`, `phone_number`, `date_birth`, `password_hash`, `date_joined`, `last_login`, `deleted_at`) VALUES
 (10, 'Thanaphat', 'Khemniwat', 'g.khemniwat@gmail.com', '+66', '0935789539', '2001-06-19', '$2y$10$zFM3qPoEz2uglhAlPMi43ONE8SsR.RHDzZggMPXbgzHqJRSTVecOq', '2023-11-17 11:33:14', '2023-11-21 06:39:10', NULL),
 (12, 'Muk', 'June', 'mj@sual.com', '+66', '0123456789', '2023-11-02', '$2y$10$olQ3C22pj5R0glOTdcJPfO1oZuvxc/nJFnHx7yI65656iTTKbIB8q', '2023-11-20 13:19:42', '2023-11-20 13:19:42', NULL),
-(13, 'Muk', 'm', 'muk@gmail.com', '+66', '0987456321', '2023-11-02', '$2y$10$fpPlty6lAzw4H9/E5u2DO.17k0/VTTpn2IRW9JGipZJzS49yWHJHG', '2023-11-21 06:49:50', '2023-11-21 06:55:05', NULL);
+(14, 'GTK', 'KhemniwatZA', 'g@tk.com', '+66', '0816428646', '2023-11-20', '$2y$10$xfA8d1P5Kgf1t4XFekBnSOxeyvUTNad/7XTAi/mWRkp9rCf9ljP0G', '2023-11-21 09:17:43', '2023-11-21 09:17:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -406,7 +398,7 @@ ALTER TABLE `users`
   ADD KEY `idx_users_deleted_at` (`deleted_at`,`last_login`);
 
 --
--- AUTO_INCREMENT for dumpedก
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
@@ -431,7 +423,7 @@ ALTER TABLE `sessions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables

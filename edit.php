@@ -54,14 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                         last_name = ?,
                         email = ?,
                         phone_number = ?,
-                        date_birth = ?,
-                        password_hash = ?
+                        date_birth = ?
                         WHERE id = ?";
 
                 // Prepare and execute the update query
-                $password_hash = password_hash($password, PASSWORD_DEFAULT);
                 $update_stmt = $conn->prepare($update_query);
-                $update_stmt->bind_param("ssssssi", $first_name, $last_name, $email, $phone_number, $date_of_birth, $password_hash, $userId);
+                $update_stmt->bind_param("sssssi", $first_name, $last_name, $email, $phone_number, $date_of_birth, $userId);
                 $update_stmt->execute();
 
                 if ($update_stmt->affected_rows > 0) 
@@ -103,7 +101,7 @@ function validateFormData($first_name, $last_name, $email, $phone_number, $date_
     } elseif (strtotime($date_of_birth) >= strtotime('now')) {
         return 'Invalid date of birth.';
     } elseif (!password_verify($password, $user['password_hash'])) {
-        $error_message = 'Passwords do not match.';}
+        return 'Passwords do not match.';}
 
     return true; // Validation passed
 }
