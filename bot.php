@@ -96,12 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_message']) && iss
     } elseif (preg_match('/^\/downvote(?:\s+(.*))?$/i', $content, $matches)) {
         $feedbackType = 'downvote';
         $comment = $matches[1] ?? null; // Set to null if no comment is provided
-    } elseif (preg_match('/^\/upvote(?:\s+(.*))?$/i', $content, $matches)) {
-        $feedbackType = 'upvote';
-        $comment = $matches[1] ?? null; // Set to null if no comment is provided
-    } elseif (preg_match('/^\/downvote(?:\s+(.*))?$/i', $content, $matches)) {
-        $feedbackType = 'downvote';
-        $comment = $matches[1] ?? null; // Set to null if no comment is provided
     }
     // Check if the message is a command to change the session name
     elseif (preg_match('/^\/name\s+(.+)/', $content, $matches)) {

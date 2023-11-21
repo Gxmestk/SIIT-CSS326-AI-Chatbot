@@ -25,11 +25,11 @@
             <p>Delete the current chat session.</p>
         </div>
         <div class="list-group-item">
-            <h5>/upvote</h5>
+            <h5>/upvote {comment}</h5>
             <p>Upvote the bot's last response.</p>
         </div>
         <div class="list-group-item">
-            <h5>/downvote</h5>
+            <h5>/downvote {comment}</h5>
             <p>Downvote the bot's last response.</p>
         </div>
         <div class="list-group-item">

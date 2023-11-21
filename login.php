@@ -24,14 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Fetch associative array from result set.
                 $user = $result->fetch_assoc();
 
-                // Check if the account is marked as deleted.
-                if ($user['deleted_at'] !== null) {
-                    // Redirect to restore_user.php with a message
-                    $_SESSION['restore_user_id'] = $user['id'];
-                    header("Location: restore_user.php");
-                    exit();
-                }
-
                 // Check if the hashed password matches.
                 if (password_verify($password, $user['password_hash'])) {
                     // Password is correct, set the session variable.
@@ -43,6 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     // Handle incorrect password.
                     $error_message = 'Invalid email or password.';
+                }
+                // Check if the account is marked as deleted.
+                if ($user['deleted_at'] !== null) {
+                    // Redirect to restore_user.php with a message
+                    $_SESSION['restore_user_id'] = $user['id'];
+                    header("Location: restore_user.php");
+                    exit();
                 }
             } else {
                 // Handle no user found.

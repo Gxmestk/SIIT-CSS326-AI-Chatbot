@@ -1,6 +1,5 @@
 <?php
 
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -51,6 +50,7 @@ function fetchSessionMessages($sessionId, $conn)
     return $messages;
 }
 
+// Check if the user is creating a new chat session.
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_chat'])) {
     $userId = $_SESSION['user_id']; // Assuming the user is logged in and their ID is in the session
 
@@ -62,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_chat'])) {
 
     // Get the ID of the newly created session
     $newSessionId = $conn->insert_id;
+
 
     // Redirect to the new chat session
     header("Location: chat.php?session_id=$newSessionId");
@@ -75,8 +76,26 @@ $sessions = fetchUserSessions($_SESSION['user_id'], $conn);
 
 // Check if session_id is present in the URL and fetch messages.
 if (isset($_GET['session_id']) && filter_var($_GET['session_id'], FILTER_VALIDATE_INT) !== false) {
-    $sessionId = $_GET['session_id'];
-    $messages = fetchSessionMessages($sessionId, $conn);
+        // Check if the Session ID in own by user
+        $sessionId = $_GET['session_id'];
+        $userId = $_SESSION['user_id'];
+        $query = "SELECT id FROM sessions WHERE id = ? AND user_id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ii", $sessionId, $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows !== 1) {
+            // Redirect to the chat page and stop script execution.
+            header("Location: chat.php");
+            exit();
+        }
+        else{
+            // Fetch messages for the session
+            $sessionId = $_GET['session_id'];
+            $messages = fetchSessionMessages($sessionId, $conn);
+            
+        }
 }
 
 

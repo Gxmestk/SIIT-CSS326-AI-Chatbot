@@ -1,10 +1,13 @@
 <?php
 
+// Error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Initialize the session to access session variables.
+// To be able to access the session variables, session_start() must be called at the beginning of every page.
+//In this case we use session_start() to check if the user is logged in and get the user_id from the session. 
 session_start();
 
 // Redirect to the login page if the user is not logged in.

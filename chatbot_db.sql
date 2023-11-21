@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 20, 2023 at 07:04 AM
+-- Generation Time: Nov 21, 2023 at 08:44 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -136,7 +136,21 @@ INSERT INTO `messages` (`id`, `session_id`, `content`, `sender`, `timestamp`, `d
 (31, 5, 'Yes,  what is the biggest planet in our solar system?', 'user', '2023-11-20 04:53:45', NULL, NULL, '2023-11-20 04:53:45'),
 (32, 5, ' I\'m not sure, but I know it\'s the largest planet in the Solar System.', 'bot', '2023-11-20 04:53:45', NULL, 31, '2023-11-20 04:53:45'),
 (39, 5, '/help', 'user', '2023-11-20 06:54:22', NULL, NULL, '2023-11-20 06:54:22'),
-(40, 5, ' Do you like to help people? I like to volunteer at the animal shelter.', 'bot', '2023-11-20 06:54:22', NULL, 39, '2023-11-20 06:54:22');
+(40, 5, ' Do you like to help people? I like to volunteer at the animal shelter.', 'bot', '2023-11-20 06:54:22', NULL, 39, '2023-11-20 06:54:22'),
+(41, 6, 'Hello I\'m Mook Suay !!', 'user', '2023-11-20 13:42:33', NULL, NULL, '2023-11-20 13:42:33'),
+(42, 6, ' Hi Mook sue! How are you? I just got back from the beach.', 'bot', '2023-11-20 13:42:33', NULL, 41, '2023-11-20 13:42:33'),
+(43, 6, 'I love Puppy', 'user', '2023-11-20 13:45:08', NULL, NULL, '2023-11-20 13:45:08'),
+(44, 6, ' I love puppies too! I have two of them. Do you have any pets?', 'bot', '2023-11-20 13:45:08', NULL, 43, '2023-11-20 13:45:24'),
+(45, 7, 'Fuck UP!! ', 'user', '2023-11-20 13:45:51', NULL, NULL, '2023-11-20 13:45:51'),
+(46, 7, ' I know, right?  I was so mad.  I don\'t know what I would have done if it had happened to me.', 'bot', '2023-11-20 13:45:51', NULL, 45, '2023-11-20 13:45:59'),
+(47, 5, 'hi', 'user', '2023-11-21 05:56:59', NULL, NULL, '2023-11-21 05:56:59'),
+(48, 5, ' Hi! How are you? I just got back from walking my dog. Do you have any pets?', 'bot', '2023-11-21 05:56:59', NULL, 47, '2023-11-21 05:57:15'),
+(49, 5, 'Oh my god!', 'user', '2023-11-21 06:39:10', NULL, NULL, '2023-11-21 06:39:10'),
+(50, 5, ' I know, right?  I was so mad.  I don\'t know what I would have done if it had happened to me.', 'bot', '2023-11-21 06:39:10', NULL, 49, '2023-11-21 06:39:10'),
+(51, 11, 'Hi ', 'user', '2023-11-21 06:53:38', NULL, NULL, '2023-11-21 06:53:38'),
+(52, 11, ' Hi! How are you? I just got back from a walk with my dog. Do you have any pets?', 'bot', '2023-11-21 06:53:38', NULL, 51, '2023-11-21 06:54:33'),
+(53, 12, 'hola', 'user', '2023-11-21 06:55:05', NULL, NULL, '2023-11-21 06:55:05'),
+(54, 12, ' Holidays are my favorite time of the year.  Do you like holidays?', 'bot', '2023-11-21 06:55:05', NULL, 53, '2023-11-21 06:55:05');
 
 --
 -- Triggers `messages`
@@ -171,7 +185,9 @@ CREATE TABLE `modelfeedback` (
 INSERT INTO `modelfeedback` (`message_id`, `feedback`, `comment`, `timestamp`, `deleted_at`) VALUES
 (12, 'downvote', 'bad answer', '2023-11-19 15:51:54', NULL),
 (28, 'downvote', 'weird', '2023-11-20 04:51:23', NULL),
-(32, 'upvote', 'it\'s was fun !!!', '2023-11-20 04:54:20', NULL);
+(32, 'upvote', 'it\'s was fun !!!', '2023-11-20 04:54:20', NULL),
+(42, 'downvote', '', '2023-11-20 13:43:10', NULL),
+(54, 'downvote', 'baddddddd', '2023-11-21 06:55:27', NULL);
 
 -- --------------------------------------------------------
 
@@ -251,7 +267,29 @@ INSERT INTO `sessions` (`id`, `user_id`, `model_metadata_id`, `start_time`, `las
 (2, 10, 2, '2023-11-18 13:35:39', '2023-11-19 13:59:32', '2023-11-20 03:07:57', 'Muk'),
 (3, 10, 2, '2023-11-20 03:09:44', '2023-11-20 03:11:42', '2023-11-20 03:13:41', 'June'),
 (4, 10, 2, '2023-11-20 03:16:06', '2023-11-20 03:16:36', '2023-11-20 03:16:43', 'Games'),
-(5, 10, 2, '2023-11-20 04:50:13', '2023-11-20 06:54:22', NULL, 'Soon');
+(5, 10, 2, '2023-11-20 04:50:13', '2023-11-21 06:39:10', NULL, '1'),
+(6, 12, 2, '2023-11-20 13:40:12', '2023-11-20 13:45:08', '2023-11-20 14:00:48', 'MJ'),
+(7, 12, 2, '2023-11-20 13:45:26', '2023-11-20 13:45:51', '2023-11-20 13:47:27', '555'),
+(8, 12, 2, '2023-11-20 14:18:31', '2023-11-20 14:18:31', NULL, NULL),
+(9, 12, 2, '2023-11-20 15:19:33', '2023-11-20 15:19:33', NULL, NULL),
+(10, 10, 2, '2023-11-21 06:27:18', '2023-11-21 06:27:18', NULL, NULL),
+(11, 13, 2, '2023-11-21 06:52:50', '2023-11-21 06:53:38', NULL, '123'),
+(12, 13, 2, '2023-11-21 06:54:42', '2023-11-21 06:55:05', '2023-11-21 06:56:23', '555'),
+(13, 13, 2, '2023-11-21 06:59:40', '2023-11-21 06:59:40', NULL, NULL);
+
+--
+-- Triggers `sessions`
+--
+DELIMITER $$
+CREATE TRIGGER `after_session_use_update` AFTER UPDATE ON `sessions` FOR EACH ROW BEGIN
+    IF OLD.last_use <> NEW.last_use THEN
+        UPDATE Users
+        SET last_login = CURRENT_TIMESTAMP
+        WHERE Users.id = NEW.user_id;
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -278,7 +316,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `country_code`, `phone_number`, `date_birth`, `password_hash`, `date_joined`, `last_login`, `deleted_at`) VALUES
-(10, 'Thanaphat', 'Khemniwat', 'g.khemniwat@gmail.com', '+66', '0935789539', '2001-06-19', '$2y$10$zFM3qPoEz2uglhAlPMi43ONE8SsR.RHDzZggMPXbgzHqJRSTVecOq', '2023-11-17 11:33:14', '2023-11-17 11:33:14', NULL);
+(10, 'Thanaphat', 'Khemniwat', 'g.khemniwat@gmail.com', '+66', '0935789539', '2001-06-19', '$2y$10$zFM3qPoEz2uglhAlPMi43ONE8SsR.RHDzZggMPXbgzHqJRSTVecOq', '2023-11-17 11:33:14', '2023-11-21 06:39:10', NULL),
+(12, 'Muk', 'June', 'mj@sual.com', '+66', '0123456789', '2023-11-02', '$2y$10$olQ3C22pj5R0glOTdcJPfO1oZuvxc/nJFnHx7yI65656iTTKbIB8q', '2023-11-20 13:19:42', '2023-11-20 13:19:42', NULL),
+(13, 'Muk', 'm', 'muk@gmail.com', '+66', '0987456321', '2023-11-02', '$2y$10$fpPlty6lAzw4H9/E5u2DO.17k0/VTTpn2IRW9JGipZJzS49yWHJHG', '2023-11-21 06:49:50', '2023-11-21 06:55:05', NULL);
 
 -- --------------------------------------------------------
 
@@ -300,7 +340,7 @@ CREATE TABLE `usersessionmessages` (
 --
 DROP TABLE IF EXISTS `model_feedback_summary`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `model_feedback_summary`  AS SELECT `mm`.`id` AS `id`, `mm`.`model_name` AS `model_name`, `mm`.`version` AS `version`, `mm`.`description` AS `description`, `mm`.`date_added` AS `date_added`, count((case when (`mf`.`feedback` = 'upvote') then 1 end)) AS `upvote_count`, count((case when (`mf`.`feedback` = 'downvote') then 1 end)) AS `downvote_count`, substring_index(group_concat(`mf`.`comment` order by `mf`.`timestamp` DESC separator '||'),'||',3) AS `latest_comments` FROM (((`modelmetadata` `mm` join `sessions` `s` on((`mm`.`id` = `s`.`model_metadata_id`))) join `messages` `m` on((`s`.`id` = `m`.`session_id`))) left join `modelfeedback` `mf` on((`m`.`id` = `mf`.`message_id`))) GROUP BY `mm`.`id` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `model_feedback_summary`  AS SELECT `mm`.`id` AS `id`, `mm`.`model_name` AS `model_name`, `mm`.`version` AS `version`, `mm`.`description` AS `description`, `mm`.`date_added` AS `date_added`, count((case when (`mf`.`feedback` = 'upvote') then 1 end)) AS `upvote_count`, count((case when (`mf`.`feedback` = 'downvote') then 1 end)) AS `downvote_count`, substring_index(group_concat(`mf`.`comment` order by `mf`.`timestamp` DESC separator '||'),'||',3) AS `latest_comments` FROM (((`modelmetadata` `mm` join `sessions` `s` on((`mm`.`id` = `s`.`model_metadata_id`))) join `messages` `m` on((`s`.`id` = `m`.`session_id`))) left join `modelfeedback` `mf` on((`m`.`id` = `mf`.`message_id`))) GROUP BY `mm`.`id`  ;
 
 -- --------------------------------------------------------
 
@@ -366,14 +406,14 @@ ALTER TABLE `users`
   ADD KEY `idx_users_deleted_at` (`deleted_at`,`last_login`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT for dumpedก
 --
 
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `modelmetadata`
@@ -385,13 +425,13 @@ ALTER TABLE `modelmetadata`
 -- AUTO_INCREMENT for table `sessions`
 --
 ALTER TABLE `sessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
