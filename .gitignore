@@ -1,5 +1,6 @@
 # Configuration files with sensitive data
 db.php
+api_config.php
 
 # IDE
 .vscode/

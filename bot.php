@@ -13,13 +13,15 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 include 'db.php';
+require_once 'api_config.php';
+
 // Function to call the Hugging Face API
 function callHuggingFaceAPI($userInput)
 {
     $apiURL = 'https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill';
     $headers = [
         'Content-Type: application/json',
-        'Authorization: Bearer YOUR_HUGGING_FACE_API_TOKEN_HERE' // Replace API_TOKEN with your actual token
+        'Authorization: Bearer ' . HUGGING_FACE_API_TOKEN
     ];
 
     $postData = [

@@ -55,8 +55,11 @@ $pass = 'your_password';
 ```
 
 4. Configure Hugging Face API
+```bash
+cp api_config.example.php api_config.php
+```
 - Get your API token from [Hugging Face](https://huggingface.co/settings/tokens)
-- Update the API token in `bot.php` (line 22)
+- Edit `api_config.php` and replace `YOUR_HUGGING_FACE_API_TOKEN_HERE` with your actual token
 
 5. Set up your web server
 - Point your web server's document root to the project directory
