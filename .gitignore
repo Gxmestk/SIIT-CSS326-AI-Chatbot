@@ -1,0 +1,53 @@
+# Configuration files with sensitive data
+db.php
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Backup files
+*.bak
+*.backup
+backup/
+
+# Cache
+cache/
+*.cache
+
+# Uploads (if any)
+uploads/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Vendor/dependencies (if using composer)
+vendor/
+node_modules/
+
+# Build artifacts
+dist/
+build/
